@@ -1,4 +1,5 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import Roles from 'App/Enums/Roles'
 
 export default class extends BaseSchema {
   protected tableName = 'roles'
@@ -13,6 +14,13 @@ export default class extends BaseSchema {
        */
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
+    })
+
+    this.defer(async (db) => {
+      await db.table(this.tableName).multiInsert([
+        { id: Roles.ROOT, name: 'Root' },
+        { id: Roles.ADMIN, name: 'Admin' },
+      ])
     })
   }
 
