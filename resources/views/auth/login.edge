@@ -1,0 +1,48 @@
+@layout('layouts/auth')
+@set('completedSetup', flashMessages.has('success'))
+
+@section('content')
+
+  @component('auth/_card')
+    <header class="text-center mb-4">
+      <h1 class="block text-2xl font-bold text-gray-800 {{ completedSetup ? 'mb-4' : '' }}">
+        Login
+      </h1>
+
+      @if(completedSetup)
+        @!alert.success({
+          message: flashMessages.get('success')
+        })
+      @end
+    </header>
+
+    <form action="" method="POST" class="grid gap-y-6">
+      {{ csrfField() }}
+
+      @form.control({
+        name: 'email',
+        placeholder:'jane.doe@sample.com',
+        errorKey: 'errors.email',
+        required: true
+      })
+        @!form.label({ title: 'Email' })
+        @!form.input({ type: 'email' })
+        @!form.error()
+      @end
+
+      @form.control({
+        name: 'password',
+        placeholder:'***************',
+        errorKey: 'errors.password',
+        required: true
+      })
+        @!form.label({ title: 'Password' })
+        @!form.input({ type: 'password' })
+        @!form.error()
+      @end
+
+      @!form.submit({ text: 'Login' })
+    </form>
+  @end
+
+@end

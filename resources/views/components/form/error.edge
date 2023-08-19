@@ -1,0 +1,20 @@
+{{--
+  Check and see if the current input has an error message inside the
+  flashMessages
+--}}
+@set(
+  'errorMessage',
+  $context.errorKey
+    ? flashMessages.get($context.errorKey)
+    : flashMessages.get('errors', {})[$context.name]
+)
+
+{{--
+  The default set of styling classes for the input. One can pass
+  the class attribute to define their own
+--}}
+@set('classes', 'text-xs text-red-600 mt-2')
+
+@if(errorMessage)
+  <p {{ $props.serialize({ class: classes }, false) }}> {{ errorMessage }} </p>
+@end
