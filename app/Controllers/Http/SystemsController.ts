@@ -7,7 +7,9 @@ export default class SystemsController {
   public async setup({ response, view }: HttpContextContract) {
     const hasRootUser = await User.first()
     if (hasRootUser) {
-      return response.notFound()
+      response.header('content-type', 'text/html')
+      response.status(404)
+      return view.render('errors/not-found')
     }
     return view.render('auth/setup', { redirectTo: '/login' })
   }
