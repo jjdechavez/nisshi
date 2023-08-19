@@ -11,12 +11,20 @@
 
       @if(completedSetup)
         @!alert.success({
-          message: flashMessages.get('success')
+          message: flashMessages.get('success'),
+          classes: 'mt-4'
+        })
+      @end
+
+      @if(flashMessages.has('error'))
+        @!alert.error({
+          message: flashMessages.get('error'),
+          classes: 'mt-4'
         })
       @end
     </header>
 
-    <form action="" method="POST" class="grid gap-y-6">
+    <form action="{{ route('login.store') }}" method="POST" class="grid gap-y-6">
       {{ csrfField() }}
 
       @form.control({

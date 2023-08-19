@@ -1,4 +1,10 @@
-<div class="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+@set('defaultClasses', 'flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg')
+
+@if(classes)
+  @set('defaultClasses', defaultClasses + ` ${classes}`)
+@end
+
+<div class="{{ defaultClasses }}" role="alert">
   @!svg.solidXCircle({
     classes: 'flex-shrink-0 inline mr-3'
   })

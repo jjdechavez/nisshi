@@ -27,6 +27,7 @@ Route.get('/', async ({ view }) => {
 Route.get('/setup', 'SystemsController.setup').as('setup')
 Route.post('/setup', 'SystemsController.setupStore').as('setup.store')
 Route.get('/login', 'AuthController.login').as('login')
+Route.post('/login', 'AuthController.loginStore').as('login.store')
 
 Route.group(() => {
   Route.get('/', 'dashboard/DashboardController.index').as('dashboard')
