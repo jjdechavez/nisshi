@@ -49,6 +49,12 @@
         @!form.error()
       @end
 
+      @form.control({
+        name: 'rememberMe'
+      })
+        @!form.checkbox({ label: 'Remember me', value: true })
+      @end
+
       @!form.submit({ text: 'Login' })
     </form>
   @end
