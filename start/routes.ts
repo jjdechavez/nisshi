@@ -30,4 +30,5 @@ Route.get('/login', 'AuthController.login').as('login')
 
 Route.group(() => {
   Route.get('/', 'dashboard/DashboardController.index').as('dashboard')
+  Route.get('/teams', 'dashboard/DashboardController.teams').as('teams')
 }).prefix('dashboard')
