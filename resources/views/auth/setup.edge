@@ -1,0 +1,75 @@
+@layout('layouts/auth')
+@set('completedSetup', flashMessages.has('success'))
+
+@section('content')
+
+  @component('auth/_card')
+    <header class="text-center mb-4">
+      <h1 class="block text-2xl font-bold text-gray-800">Setup Account</h1>
+    </header>
+
+    <form action="{{ route('setup.store') }}" method="POST" class="grid gap-y-6 {{ completedSetup ? 'hidden' : 'block' }}">
+      {{ csrfField() }}
+
+      @form.control({
+        name: 'firstName',
+        placeholder:'Jane',
+        errorKey: 'errors.firstName',
+        required: true
+      })
+        @!form.label({ title: 'First Name' })
+        @!form.input({ type: 'text' })
+        @!form.error()
+      @end
+
+      @form.control({
+        name: 'lastName',
+        placeholder:'Doe',
+        errorKey: 'errors.lastName',
+        required: true
+      })
+        @!form.label({ title: 'Last Name' })
+        @!form.input({ type: 'text' })
+        @!form.error()
+      @end
+
+      @form.control({
+        name: 'email',
+        placeholder:'jane.doe@sample.com',
+        errorKey: 'errors.email',
+        required: true
+      })
+        @!form.label({ title: 'Email' })
+        @!form.input({ type: 'email' })
+        @!form.error()
+      @end
+
+      @form.control({
+        name: 'password',
+        placeholder:'***************',
+        errorKey: 'errors.password',
+        required: true
+      })
+        @!form.label({ title: 'Password' })
+        @!form.input({ type: 'password' })
+        @!form.error()
+      @end
+
+      @form.control({
+        name: 'password_confirmation',
+        placeholder:'***************',
+        errorKey: 'errors.password_confirmation',
+        required: true
+      })
+        @!form.label({ title: 'Password Confirmation' })
+        @!form.input({ type: 'password' })
+        @!form.error()
+      @end
+
+      @!form.input({ type: 'hidden', name: 'redirect_to', value: redirectTo })
+
+      @!form.submit({ text: 'Save' })
+    </form>
+  @end
+
+@end
