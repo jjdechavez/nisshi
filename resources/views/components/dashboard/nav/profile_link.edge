@@ -1,0 +1,19 @@
+@set('isActive', request.matchesRoute(active))
+@set('classes', 'block px-4 py-2 text-sm text-gray-700')
+
+@if(isActive)
+  @set('classes', classes + ' bg-gray-100')
+@end
+
+<a
+  {{
+    $props.serializeExcept(['active'], {
+      href: route(href),
+      class: classes,
+    }, false)
+  }}
+  role="menuitem"
+  tabindex="-1"
+>
+  {{ name }}
+</a>
