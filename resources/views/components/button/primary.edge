@@ -1,7 +1,7 @@
 @set('defaultClasses', 'inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring active:text-indigo-500 cursor-pointer')
 
 @if(classes)
-  @set('defaultClasses', defaultClasses + ` ${classes}`)
+  @set('defaultClasses', classes)
 @end
 
 @if(type === "link")
