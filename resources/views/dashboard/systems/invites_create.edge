@@ -1,0 +1,56 @@
+@layout('layouts/dashboard')
+@set('header', 'Systems')
+
+@section('content')
+  <div class="grid grid-cols-4 gap-4">
+    @include('dashboard/partials/systems/nav')
+
+    <section class="col-span-3 px-4">
+      <header class="flex justify-between items-center">
+        <h2 class="leading-4 font-semibold text-gray-900 text-2xl">Invite Member</h2>
+        @!button.primary({
+          type: 'submit',
+          name: 'Send invite',
+          form: 'invites_create'
+        })
+      </header>
+
+      @include('dashboard/partials/systems/tabs')
+
+      <div class="mt-5 py-4 px-4 bg-gray-50">
+
+        <section class="grid gap-y-4 w-4/6 mx-auto lg:w-1/2">
+
+          <form id="invites_create" action="{{ route('login_store') }}" method="POST" class="grid gap-y-6">
+            {{ csrfField() }}
+
+            @form.control({
+              name: 'email',
+              placeholder:'jane.doe@sample.com',
+              errorKey: 'errors.email',
+              required: true
+            })
+              @!form.label({ title: 'Email' })
+              @!form.input({ type: 'email' })
+              @!form.error()
+            @end
+
+            @form.control({
+              name: 'role',
+              placeholder:'Admin',
+              required: true,
+              errorKey: 'errors.role'
+            })
+              @!form.label({ title: 'Role' })
+              @!form.select({ options: roleOptions })
+              @!form.error()
+            @end
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </section>
+@end

@@ -8,8 +8,12 @@ export default class SystemsController {
 
     const payload = {
       tabs: [
-        { name: 'Members', active: 'systems_members' },
-        { name: 'Invites and requests', active: 'systems_invites' },
+        { name: 'Members', href: '/dashboard/systems/members', active: 'systems_members' },
+        {
+          name: 'Invites and requests',
+          href: 'systems_members',
+          active: ['systems_invites', 'systems_invites_create'],
+        },
       ],
     }
 
