@@ -10,7 +10,13 @@ export default class SystemsController {
 
     members.baseUrl('/dashboard/systems/members')
 
-    return view.render('dashboard/systems/index', { members })
+    return view.render('dashboard/systems/index', {
+      members,
+      tabs: [
+        { name: 'Members', active: 'systems_members' },
+        { name: 'Invites and requests', active: 'systems_invites' },
+      ],
+    })
   }
 
   public async roles({ request, view }: HttpContextContract) {
