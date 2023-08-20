@@ -6,7 +6,12 @@
 
 @if(type === "link")
   <a
-    class="{{ defaultClasses }}"
+    {{
+      $props.serializeExcept(['type'], {
+        href: route(href),
+        class: defaultClasses
+      }, false)
+    }}
   >
     {{ name }}
   </a>
@@ -14,8 +19,11 @@
 
 @if(["button", "submit", "reset"].includes(type))
   <button
-    type="{{ type }}"
-    class="{{ defaultClasses }}"
+    {{
+      $props.serializeExcept(['href'], {
+        class: defaultClasses
+      }, false)
+    }}
   >
     {{ name }}
   </button>
