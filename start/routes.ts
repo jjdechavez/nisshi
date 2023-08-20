@@ -25,5 +25,14 @@ Route.get('/', async ({ view }) => {
 })
 
 Route.get('/setup', 'SystemsController.setup').as('setup')
-Route.post('/setup', 'SystemsController.setupStore').as('setup.store')
+Route.post('/setup', 'SystemsController.setupStore').as('setup_store')
 Route.get('/login', 'AuthController.login').as('login')
+Route.post('/login', 'AuthController.loginStore').as('login_store')
+Route.get('/logout', 'AuthController.logout').as('logout')
+
+Route.group(() => {
+  Route.get('/', 'dashboard/DashboardController.index').as('dashboard')
+  Route.get('/teams', 'dashboard/DashboardController.teams').as('teams')
+  Route.get('/systems/members', 'dashboard/SystemsController.index').as('systems_members')
+  Route.get('/systems/roles', 'dashboard/SystemsController.roles').as('systems_roles')
+}).prefix('dashboard')

@@ -1,0 +1,11 @@
+@if(flashMessages.has('success'))
+  @!alert.success({
+    message: flashMessages.get('success')
+  })
+@end
+
+@if(flashMessages.has('error'))
+  @!alert.error({
+    message: flashMessages.get('error')
+  })
+@end

@@ -2,7 +2,7 @@
   The default set of styling classes for the input. One can pass
   the class attribute to define their own
 --}}
-@set('defaultClasses', 'text-sm text-gray-600 dark:text-gray-400 font-medium mb-2')
+@set('defaultClasses', 'block text-sm font-medium leading-6 text-gray-900')
 
 @if($context.required)
   @set('defaultClasses', defaultClasses + ` after:content-['*'] after:ml-0.5 after:text-red-500`)

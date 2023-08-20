@@ -1,0 +1,18 @@
+@set('isActive', request.matchesRoute(active))
+@set('classes', 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium')
+
+@if(isActive)
+  @set('classes', 'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium')
+@end
+
+<a
+  {{
+    $props.serializeExcept(['active'], {
+      href: route(href),
+      class: classes,
+      'aria-current': isActive ? 'page' : '',
+    }, false)
+  }}
+>
+  {{ name }}
+</a>

@@ -8,7 +8,7 @@
       <h1 class="block text-2xl font-bold text-gray-800">Setup Account</h1>
     </header>
 
-    <form action="{{ route('setup.store') }}" method="POST" class="grid gap-y-6 {{ completedSetup ? 'hidden' : 'block' }}">
+    <form action="{{ route('setup_store') }}" method="POST" class="grid gap-y-6 {{ completedSetup ? 'hidden' : 'block' }}">
       {{ csrfField() }}
 
       @form.control({

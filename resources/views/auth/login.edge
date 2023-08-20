@@ -11,12 +11,20 @@
 
       @if(completedSetup)
         @!alert.success({
-          message: flashMessages.get('success')
+          message: flashMessages.get('success'),
+          classes: 'mt-4'
+        })
+      @end
+
+      @if(flashMessages.has('error'))
+        @!alert.error({
+          message: flashMessages.get('error'),
+          classes: 'mt-4'
         })
       @end
     </header>
 
-    <form action="" method="POST" class="grid gap-y-6">
+    <form action="{{ route('login_store') }}" method="POST" class="grid gap-y-6">
       {{ csrfField() }}
 
       @form.control({
@@ -39,6 +47,12 @@
         @!form.label({ title: 'Password' })
         @!form.input({ type: 'password' })
         @!form.error()
+      @end
+
+      @form.control({
+        name: 'rememberMe'
+      })
+        @!form.checkbox({ label: 'Remember me', value: true })
       @end
 
       @!form.submit({ text: 'Login' })

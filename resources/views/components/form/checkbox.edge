@@ -1,5 +1,8 @@
-@set('classes', 'w-5 h-5 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-indigo-400 focus:outline-none focus:shadow-outline-indigo dark:text-gray-300 dark:focus:shadow-outline-gray')
-
+{{--
+  Legacy class
+ 'w-5 h-5 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-indigo-400 focus:outline-none focus:shadow-outline-indigo dark:text-gray-300 dark:focus:shadow-outline-gray'
+--}}
+@set('classes', 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600')
 
 @if (flashMessages.has('errors.' + $context.name))
   @set($props, 'value', flashMessages.get($context.name) ? flashMessages.get($context.name) : '')
@@ -9,12 +12,22 @@
     ($props.value ? $props.value : ''))
 @end
 
-<input type="checkbox" {{
-  $props.serializeExcept(['value', 'checked'], {
-    class: classes,
-    id: $context.name,
-    name: $context.name
-  }, false)
-}}
-{{ $props.checked ? 'checked' : '' }}
-value="{{ $props.value }}" />
+<div class="relative flex gap-x-3">
+  <div class="flex h-6 items-center">
+    <input type="checkbox" {{
+      $props.serializeExcept(['value', 'checked'], {
+        class: classes,
+        id: $context.name,
+        name: $context.name
+      }, false)
+    }}
+    {{ $props.checked ? 'checked' : '' }}
+    value="{{ $props.value }}" />
+  </div>
+
+  @if(label)
+    <div class="text-sm leading-6">
+      <label for="{{ $context.name }}" class="font-medium text-gray-900">{{ label }}</label>
+    </div>
+  @end
+</div>
