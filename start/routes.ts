@@ -33,4 +33,6 @@ Route.get('/logout', 'AuthController.logout').as('logout')
 Route.group(() => {
   Route.get('/', 'dashboard/DashboardController.index').as('dashboard')
   Route.get('/teams', 'dashboard/DashboardController.teams').as('teams')
+  Route.get('/systems/members', 'dashboard/SystemsController.index').as('systems_members')
+  Route.get('/systems/roles', 'dashboard/SystemsController.index').as('systems_roles')
 }).prefix('dashboard')

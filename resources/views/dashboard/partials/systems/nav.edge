@@ -1,0 +1,18 @@
+<nav class="col-span-1 flex flex-col" aria-label="Sidebar">
+  <ul class="-mx-2 grid gap-1.5" role="list">
+    <li>
+      @!dashboard.systems.link({
+        href: '/dashboard/systems/members',
+        name: 'Members',
+        active: ['systems_members']
+      })
+    </li>
+    <li>
+      @!dashboard.systems.link({
+        href: '/dashboard/systems/roles',
+        name: 'Roles',
+        active: ['systems_roles']
+      })
+    </li>
+  </ul>
+</nav>

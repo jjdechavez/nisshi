@@ -1,0 +1,12 @@
+@layout('layouts/dashboard')
+@set('header', 'Systems')
+
+@section('content')
+  <div class="grid grid-cols-4 gap-4">
+    @include('dashboard/partials/systems/nav')
+
+    <section class="col-auto px-4">
+      Items
+    </section>
+  </div>
+@end
