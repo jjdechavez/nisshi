@@ -16,54 +16,58 @@
 
       @include('dashboard/partials/systems/tabs')
 
-      <div class="mt-5 py-4 px-4 bg-gray-50">
-        <form>
-          <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead>
-              <tr>
-                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                  Name
-                </th>
-                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                  Role
-                </th>
-                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                  Status
-                </th>
-              </tr>
-            </thead>
+      @if(request.matchesRoute('systems_members'))
 
-            <tbody class="divide-y">
-              @each(member in members)
+        <div class="mt-5 py-4 px-4 bg-gray-50">
+          <form>
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <thead>
                 <tr>
-                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                    <a href="#" class="font-semibold">
-                      <h5>{{ member.first_name + ' ' + member.last_name }}</h5>
-                    </a>
-                    <span>{{ member.email }}</span>
-                  </td>
-                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                    @if(member.role_id === Roles.ROOT)
-                      Root
-                    @elseif(member.role_id === Roles.ADMIN)
-                      Admin
-                    @else
-                      Unknown Alien
-                    @end
-                  </td>
-                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                    {{ capitalCase(member.status) }}
-                  </td>
+                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                    Name
+                  </th>
+                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                    Role
+                  </th>
+                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                    Status
+                  </th>
                 </tr>
-              @end
-            </tbody>
-          </table>
-        </form>
-      </div>
+              </thead>
 
-      @!pagination.base({
-        pagination: members
-      })
+              <tbody class="divide-y">
+                @each(member in members)
+                  <tr>
+                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                      <a href="#" class="font-semibold">
+                        <h5>{{ member.first_name + ' ' + member.last_name }}</h5>
+                      </a>
+                      <span>{{ member.email }}</span>
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                      @if(member.role_id === Roles.ROOT)
+                        Root
+                      @elseif(member.role_id === Roles.ADMIN)
+                        Admin
+                      @else
+                        Unknown Alien
+                      @end
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                      {{ capitalCase(member.status) }}
+                    </td>
+                  </tr>
+                @end
+              </tbody>
+            </table>
+          </form>
+        </div>
+
+        @!pagination.base({
+          pagination: members
+        })
+
+      @end
 
     </section>
 @end

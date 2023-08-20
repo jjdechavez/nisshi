@@ -6,17 +6,21 @@ export default class SystemsController {
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
 
-    const members = await Database.from('users').paginate(page, limit)
-
-    members.baseUrl('/dashboard/systems/members')
-
-    return view.render('dashboard/systems/index', {
-      members,
+    const payload = {
       tabs: [
         { name: 'Members', active: 'systems_members' },
         { name: 'Invites and requests', active: 'systems_invites' },
       ],
-    })
+    }
+
+    if (request.matchesRoute('systems_members')) {
+      const members = await Database.from('users').paginate(page, limit)
+
+      members.baseUrl('/dashboard/systems/members')
+      Object.assign(payload, { members })
+    }
+
+    return view.render('dashboard/systems/index', payload)
   }
 
   public async roles({ request, view }: HttpContextContract) {
