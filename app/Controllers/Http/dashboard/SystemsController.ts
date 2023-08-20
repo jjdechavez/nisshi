@@ -9,7 +9,6 @@ export default class SystemsController {
     const members = await Database.from('users').paginate(page, limit)
 
     members.baseUrl('/dashboard/systems/members')
-    console.log(members)
 
     return view.render('dashboard/systems/index', { members })
   }

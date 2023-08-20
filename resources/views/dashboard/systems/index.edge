@@ -41,7 +41,13 @@
                     <span>{{ member.email }}</span>
                   </td>
                   <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                    {{ member.role_id }}
+                    @if(member.role_id === Roles.ROOT)
+                      Root
+                    @elseif(member.role_id === Roles.ADMIN)
+                      Admin
+                    @else
+                      Unknown Alien
+                    @end
                   </td>
                   <td class="whitespace-nowrap px-4 py-3 text-gray-700">
                     {{ capitalCase(member.status) }}
@@ -52,6 +58,10 @@
           </table>
         </form>
       </div>
+
+      @!pagination.base({
+        pagination: members
+      })
 
     </section>
 @end
