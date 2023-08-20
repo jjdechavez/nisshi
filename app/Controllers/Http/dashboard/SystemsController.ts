@@ -13,7 +13,14 @@ export default class SystemsController {
     return view.render('dashboard/systems/index', { members })
   }
 
-  public async roles({ view }: HttpContextContract) {
-    return view.render('dashboard/systems/roles')
+  public async roles({ request, view }: HttpContextContract) {
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
+
+    const roles = await Database.from('roles').paginate(page, limit)
+
+    roles.baseUrl('/dashboard/systems/roles')
+
+    return view.render('dashboard/systems/roles', { roles })
   }
 }

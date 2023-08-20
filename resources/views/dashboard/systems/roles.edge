@@ -5,8 +5,50 @@
   <div class="grid grid-cols-4 gap-4">
     @include('dashboard/partials/systems/nav')
 
-    <section class="col-auto px-4 py-2">
-      Roles
+    <section class="col-span-3 px-4">
+      <header class="flex justify-between items-center">
+        <h2 class="leading-4 font-semibold text-gray-900 text-2xl">Roles</h2>
+        @!button.primary({
+          type: 'link',
+          name: 'Add role',
+        })
+      </header>
+
+      <div class="mt-5 py-4 px-4 bg-gray-50">
+        <form>
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead>
+              <tr>
+                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                  Name
+                </th>
+                <th class="whitespace-nowrap px-4 py-3">
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y">
+              @each(role in roles)
+                <tr>
+                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                    <a href="#" class="font-semibold">
+                      <h5>{{ role.name }}</h5>
+                    </a>
+                  </td>
+                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+
+                  </td>
+                </tr>
+              @end
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+      @!pagination.base({
+        pagination: roles
+      })
+
     </section>
   </div>
 @end
