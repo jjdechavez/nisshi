@@ -1,0 +1,57 @@
+@layout('layouts/dashboard')
+@set('header', 'Systems')
+
+@section('content')
+  <div class="grid grid-cols-4 gap-4">
+    @include('dashboard/partials/systems/nav')
+
+    <section class="col-span-3 px-4">
+      <header class="flex justify-between items-center">
+        <h2 class="leading-4 font-semibold text-gray-900 text-2xl">Members</h2>
+        @!button.primary({
+          type: 'link',
+          name: 'Invite member',
+        })
+      </header>
+
+      <div class="mt-5 py-4 px-4 bg-gray-50">
+        <form>
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead>
+              <tr>
+                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                  Name
+                </th>
+                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                  Role
+                </th>
+                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                  Status
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y">
+              @each(member in members)
+                <tr>
+                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                    <a href="#" class="font-semibold">
+                      <h5>{{ member.first_name + ' ' + member.last_name }}</h5>
+                    </a>
+                    <span>{{ member.email }}</span>
+                  </td>
+                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                    {{ member.role_id }}
+                  </td>
+                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                    {{ capitalCase(member.status) }}
+                  </td>
+                </tr>
+              @end
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+    </section>
+@end
