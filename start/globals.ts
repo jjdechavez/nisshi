@@ -10,6 +10,7 @@
 import View from '@ioc:Adonis/Core/View'
 import Role from 'App/Models/Role'
 import Roles from 'App/Enums/Roles'
+import { DateTime } from 'luxon'
 
 View.global('Roles', Roles)
 View.global('loadRoles', function () {
@@ -39,3 +40,7 @@ View.global('memberTabs', [
     active: ['systems_invites', 'systems_invites_create'],
   },
 ])
+
+View.global('printDateFromString', function (date: string) {
+  return DateTime.fromSQL(date).toFormat('LLL dd yyyy')
+})

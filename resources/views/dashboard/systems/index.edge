@@ -91,7 +91,7 @@
                       <a href="#" class="font-semibold">
                         <h5>{{ invite.email }}</h5>
                       </a>
-                      <span>{{ invite.created_at }}</span>
+                      <span>Invited on {{ printDateFromString(invite.created_at) }}</span>
                     </td>
                     <td class="whitespace-nowrap px-4 py-3 text-gray-700">
                       {{ printRole(invite.role_id) }}
