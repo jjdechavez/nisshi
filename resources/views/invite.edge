@@ -1,0 +1,79 @@
+@layout('layouts/default')
+
+@section('content')
+  @if(isSignatureValid)
+
+    @component('auth/_card')
+      <header class="text-center mb-4">
+        <h1 class="block text-2xl font-bold text-gray-800">Welcome to the team!</h1>
+        <p class="text-gray-500">Kindly input your information.</p>
+      </header>
+
+      <form action="{{ route('invites_confirm_store', { id }) }}" method="POST" class="grid gap-y-6">
+        {{ csrfField() }}
+
+        @form.control({
+          name: 'firstName',
+          placeholder:'Jane',
+          errorKey: 'errors.firstName',
+          required: true
+        })
+          @!form.label({ title: 'First Name' })
+          @!form.input({ type: 'text' })
+          @!form.error()
+        @end
+
+        @form.control({
+          name: 'lastName',
+          placeholder:'Doe',
+          errorKey: 'errors.lastName',
+          required: true
+        })
+          @!form.label({ title: 'Last Name' })
+          @!form.input({ type: 'text' })
+          @!form.error()
+        @end
+
+        @form.control({
+          name: 'email',
+          placeholder:'jane.doe@sample.com',
+          errorKey: 'errors.email',
+          required: true,
+        })
+          @!form.label({ title: 'Email' })
+          @!form.input({ type: 'email', value: email, readonly: true })
+          @!form.error()
+        @end
+
+        @form.control({
+          name: 'password',
+          placeholder:'***************',
+          errorKey: 'errors.password',
+          required: true
+        })
+          @!form.label({ title: 'Password' })
+          @!form.input({ type: 'password' })
+          @!form.error()
+        @end
+
+        @form.control({
+          name: 'password_confirmation',
+          placeholder:'***************',
+          errorKey: 'errors.password_confirmation',
+          required: true
+        })
+          @!form.label({ title: 'Password Confirmation' })
+          @!form.input({ type: 'password' })
+          @!form.error()
+        @end
+
+        @!form.submit({ text: 'Save' })
+      </form>
+    @end
+
+  @else
+
+    <p>Sorry the invitation is already expired. Kindly contact the Nisshi team</p>
+
+  @end
+@end

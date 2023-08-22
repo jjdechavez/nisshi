@@ -1,12 +1,17 @@
 @set('defaultClasses', 'inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring active:text-indigo-500 cursor-pointer')
 
 @if(classes)
-  @set('defaultClasses', defaultClasses + ` ${classes}`)
+  @set('defaultClasses', classes)
 @end
 
 @if(type === "link")
   <a
-    class="{{ defaultClasses }}"
+    {{
+      $props.serializeExcept(['type'], {
+        href: route(href),
+        class: defaultClasses
+      }, false)
+    }}
   >
     {{ name }}
   </a>
@@ -14,8 +19,11 @@
 
 @if(["button", "submit", "reset"].includes(type))
   <button
-    type="{{ type }}"
-    class="{{ defaultClasses }}"
+    {{
+      $props.serializeExcept(['href', 'name'], {
+        class: defaultClasses
+      }, false)
+    }}
   >
     {{ name }}
   </button>
