@@ -1,5 +1,5 @@
 <nav class="flex border-b border-gray-200 text-sm font-medium">
-  @each(tab in tabs)
+  @each(tab in memberTabs)
     <a
       href="{{ route(tab.href) }}"
       class="-mb-px border-b p-4 cursor-pointer {{ request.matchesRoute(tab.active) ? 'text-indigo-600 border-current' : 'text-gray-500 hover:text-gray-600 border-transparent hover:border-gray-300' }}"

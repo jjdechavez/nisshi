@@ -46,13 +46,7 @@
                       <span>{{ member.email }}</span>
                     </td>
                     <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      @if(member.role_id === Roles.ROOT)
-                        Root
-                      @elseif(member.role_id === Roles.ADMIN)
-                        Admin
-                      @else
-                        Unknown Alien
-                      @end
+                      {{ printRole(member.role_id) }}
                     </td>
                     <td class="whitespace-nowrap px-4 py-3 text-gray-700">
                       {{ capitalCase(member.status) }}
@@ -66,6 +60,54 @@
 
         @!pagination.base({
           pagination: members
+        })
+
+      @end
+
+
+      @if(request.matchesRoute('systems_invites'))
+
+        <div class="mt-5 py-4 px-4 bg-gray-50">
+          <form>
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <thead>
+                <tr>
+                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                    Email
+                  </th>
+                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                    Role
+                  </th>
+                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y">
+                @each(invite in invites)
+                  <tr>
+                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                      <a href="#" class="font-semibold">
+                        <h5>{{ invite.email }}</h5>
+                      </a>
+                      <span>{{ invite.created_at }}</span>
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                      {{ printRole(invite.role_id) }}
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                      {{ capitalCase(invite.status) }}
+                    </td>
+                  </tr>
+                @end
+              </tbody>
+            </table>
+          </form>
+        </div>
+
+        @!pagination.base({
+          pagination: invites
         })
 
       @end

@@ -6,22 +6,20 @@ export default class SystemsController {
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
 
-    const payload = {
-      tabs: [
-        { name: 'Members', href: '/dashboard/systems/members', active: 'systems_members' },
-        {
-          name: 'Invites and requests',
-          href: 'systems_members',
-          active: ['systems_invites', 'systems_invites_create'],
-        },
-      ],
-    }
+    const payload = {}
 
     if (request.matchesRoute('systems_members')) {
       const members = await Database.from('users').paginate(page, limit)
 
       members.baseUrl('/dashboard/systems/members')
       Object.assign(payload, { members })
+    }
+
+    if (request.matchesRoute('systems_invites')) {
+      const invites = await Database.from('invites').paginate(page, limit)
+
+      invites.baseUrl('/dashboard/systems/invites')
+      Object.assign(payload, { invites })
     }
 
     return view.render('dashboard/systems/index', payload)
