@@ -15,9 +15,6 @@ export default class Invite extends BaseModel {
   @column()
   public status: InviteStatus
 
-  @column()
-  public link: string
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

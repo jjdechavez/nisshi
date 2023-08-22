@@ -10,7 +10,6 @@ export default class extends BaseSchema {
       table.integer('role_id').unsigned().references('id').inTable('roles').notNullable()
       table.string('email', 255).notNullable().unique()
       table.enu('status', Object.values(InviteStatus)).notNullable().defaultTo(InviteStatus.PENDING)
-      table.text('link').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
