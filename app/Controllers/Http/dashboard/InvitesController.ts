@@ -5,6 +5,7 @@ import CreateInviteValidator from 'App/Validators/CreateInviteValidator'
 import InviteStatus from 'App/Enums/InviteStatus'
 import ConfirmUserValidator from 'App/Validators/ConfirmUserValidator'
 import User from 'App/Models/User'
+import notFoundPage from 'App/Exceptions/NotFoundPage'
 
 export default class InvitesController {
   public async create({ view }: HttpContextContract) {
@@ -21,15 +22,16 @@ export default class InvitesController {
     return response.redirect().toRoute('systems_invites')
   }
 
-  public async confirm({ request, params, view }: HttpContextContract) {
+  public async confirm({ request, response, params, view }: HttpContextContract) {
     const isSignatureValid = request.hasValidSignature()
     const id = params.id
 
     const invited = await Invite.findOrFail(id)
+    if (invited.status === InviteStatus.ACCEPTED) {
+      return notFoundPage({ response, view })
+    }
 
-    if (isSignatureValid) {
-      invited.status = InviteStatus.ACCEPTED
-    } else {
+    if (!isSignatureValid) {
       invited.status = InviteStatus.EXPIRED
     }
 
@@ -47,6 +49,10 @@ export default class InvitesController {
     const payload = await request.validate(ConfirmUserValidator)
 
     await User.create({ ...payload, email: invited.email })
+
+    invited.merge({ status: InviteStatus.ACCEPTED })
+    await invited.save()
+
     session.flash('success', 'Setting up your account has been successfully!')
 
     return response.redirect().toRoute('login')
