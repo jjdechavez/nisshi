@@ -1,6 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Env from '@ioc:Adonis/Core/Env'
 import Roles from 'App/Enums/Roles'
+import InviteEmail from 'App/Mailers/InviteEmail'
+import Invite from 'App/Models/Invite'
 import Role from 'App/Models/Role'
+import CreateInviteValidator from 'App/Validators/CreateInviteValidator'
 
 export default class InvitesController {
   public async create({ view }: HttpContextContract) {
@@ -24,5 +28,20 @@ export default class InvitesController {
     return view.render('dashboard/systems/invites_create', payload)
   }
 
-  public async store({}: HttpContextContract) {}
+  public async store({ request, response, session }: HttpContextContract) {
+    const payload = await request.validate(CreateInviteValidator)
+    const invited = await Invite.create(payload)
+
+    await new InviteEmail(invited).sendLater()
+
+    session.flash('success', `Invitation has been sent to ${invited.email}`)
+    return response.redirect().toRoute('systems_members')
+  }
+
+  public async confirm({ request, params, view }: HttpContextContract) {
+    const isSignatureValid = request.hasValidSignature()
+    const id = params.id
+
+    return view.render('invite', { isSignatureValid, id })
+  }
 }

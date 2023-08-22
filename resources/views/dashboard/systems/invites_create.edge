@@ -21,7 +21,9 @@
 
         <section class="grid gap-y-4 w-4/6 mx-auto lg:w-1/2">
 
-          <form id="invites_create" action="{{ route('login_store') }}" method="POST" class="grid gap-y-6">
+          {{ inspect(flashMessages.all()) }}
+
+          <form id="invites_create" action="{{ route('systems_invites_store') }}" method="POST" class="grid gap-y-6">
             {{ csrfField() }}
 
             @form.control({
@@ -36,10 +38,10 @@
             @end
 
             @form.control({
-              name: 'role',
+              name: 'roleId',
               placeholder:'Admin',
               required: true,
-              errorKey: 'errors.role'
+              errorKey: 'errors.roleId'
             })
               @!form.label({ title: 'Role' })
               @!form.select({ options: roleOptions })

@@ -20,7 +20,7 @@
 @if(["button", "submit", "reset"].includes(type))
   <button
     {{
-      $props.serializeExcept(['href'], {
+      $props.serializeExcept(['href', 'name'], {
         class: defaultClasses
       }, false)
     }}
