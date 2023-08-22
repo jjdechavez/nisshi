@@ -14,7 +14,14 @@ export default class SystemsController {
     return view.render('auth/setup', { redirectTo: '/login' })
   }
 
-  public async setupStore({ response, request, session }: HttpContextContract) {
+  public async setupStore({ response, request, session, view }: HttpContextContract) {
+    const hasRootUser = await User.findBy('roleId', Roles.ROOT)
+    if (hasRootUser) {
+      response.header('content-type', 'text/html')
+      response.status(404)
+      return view.render('errors/not-found')
+    }
+
     const payload = await request.validate(CreateUserValidator)
     await User.create({
       ...payload,
