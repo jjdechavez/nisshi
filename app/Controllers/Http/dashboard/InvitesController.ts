@@ -3,6 +3,8 @@ import InviteEmail from 'App/Mailers/InviteEmail'
 import Invite from 'App/Models/Invite'
 import CreateInviteValidator from 'App/Validators/CreateInviteValidator'
 import InviteStatus from 'App/Enums/InviteStatus'
+import ConfirmUserValidator from 'App/Validators/ConfirmUserValidator'
+import User from 'App/Models/User'
 
 export default class InvitesController {
   public async create({ view }: HttpContextContract) {
@@ -32,7 +34,21 @@ export default class InvitesController {
     }
 
     await invited.save()
+    return view.render('invite', { isSignatureValid, id, email: invited.email })
+  }
 
-    return view.render('invite', { isSignatureValid, id })
+  public async confirmStore({ request, params, session, response }: HttpContextContract) {
+    const invited = await Invite.findOrFail(params.id)
+
+    const body = request.body()
+    body['roleId'] = invited.roleId
+    request.updateBody(body)
+
+    const payload = await request.validate(ConfirmUserValidator)
+
+    await User.create({ ...payload, email: invited.email })
+    session.flash('success', 'Setting up your account has been successfully!')
+
+    return response.redirect().toRoute('login')
   }
 }

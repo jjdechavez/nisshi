@@ -6,7 +6,7 @@
   @set('classes', 'block rounded w-full mt-1 py-1 px-3 leading-8 text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-indigo-400 focus:outline-none focus:shadow-outline-indigo dark:text-gray-300 dark:focus:shadow-outline-gray')
 --}}
 
-@set('classes', 'block rounded w-full mt-1 py-1 px-3 leading-8 ')
+@set('classes', 'block rounded w-full mt-1 py-1 px-3 leading-8 read-only:bg-slate-50 read-only:text-gray-500 read-only:border-gray-200 read-only:shadow-none read-only:cursor-not-allowed ')
 
 @if(type === 'radio' || type === 'checkbox')
   @set('classes', 'w-5 h-5 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-indigo-400 focus:outline-none focus:shadow-outline-indigo dark:text-gray-300 dark:focus:shadow-outline-gray')

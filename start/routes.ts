@@ -31,6 +31,7 @@ Route.post('/login', 'AuthController.loginStore').as('login_store')
 Route.get('/logout', 'AuthController.logout').as('logout')
 
 Route.get('/invites/:id/confirm', 'dashboard/InvitesController.confirm').as('invites_confirm')
+Route.post('/invites/:id/confirm', 'dashboard/InvitesController.confirmStore').as('invites_confirm_store')
 
 Route.group(() => {
   Route.get('/', 'dashboard/DashboardController.index').as('dashboard')
