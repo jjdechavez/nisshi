@@ -36,11 +36,14 @@ Route.post('/invites/:id/confirm', 'InvitesController.confirmStore').as('invites
 Route.group(() => {
   Route.get('/', 'DashboardController.index').as('dashboard')
   Route.get('/teams', 'DashboardController.teams').as('teams')
-  Route.get('/systems/members', 'SystemsController.index').as('systems_members')
-  Route.get('/systems/invites', 'SystemsController.index').as('systems_invites')
-  Route.get('/systems/invites/create', 'InvitesController.create').as('systems_invites_create')
-  Route.post('/systems/invites', 'dashboard/InvitesController.store').as('systems_invites_store')
-  Route.get('/systems/roles', 'SystemsController.roles').as('systems_roles')
+
+  Route.group(() => {
+    Route.get('/members', 'SystemsController.index').as('systems_members')
+    Route.get('/invites', 'SystemsController.index').as('systems_invites')
+    Route.get('/invites/create', 'InvitesController.create').as('systems_invites_create')
+    Route.post('/invites', 'dashboard/InvitesController.store').as('systems_invites_store')
+    Route.get('/roles', 'SystemsController.roles').as('systems_roles')
+  }).prefix('systems')
 })
   .prefix('dashboard')
   .middleware('auth')
