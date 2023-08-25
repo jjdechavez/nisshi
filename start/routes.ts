@@ -41,4 +41,6 @@ Route.group(() => {
   Route.get('/systems/invites/create', 'InvitesController.create').as('systems_invites_create')
   Route.post('/systems/invites', 'dashboard/InvitesController.store').as('systems_invites_store')
   Route.get('/systems/roles', 'SystemsController.roles').as('systems_roles')
-}).prefix('dashboard')
+})
+  .prefix('dashboard')
+  .middleware('auth')
