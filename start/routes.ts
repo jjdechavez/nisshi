@@ -34,8 +34,8 @@ Route.get('/invites/:id/confirm', 'dashboard/InvitesController.confirm').as('inv
 Route.post('/invites/:id/confirm', 'dashboard/InvitesController.confirmStore').as('invites_confirm_store')
 
 Route.group(() => {
-  Route.get('/', 'dashboard/DashboardController.index').as('dashboard')
-  Route.get('/teams', 'dashboard/DashboardController.teams').as('teams')
+  Route.get('/', 'DashboardController.index').as('dashboard')
+  Route.get('/teams', 'DashboardController.teams').as('teams')
   Route.get('/systems/members', 'dashboard/SystemsController.index').as('systems_members')
   Route.get('/systems/invites', 'dashboard/SystemsController.index').as('systems_invites')
   Route.get('/systems/invites/create', 'dashboard/InvitesController.create').as('systems_invites_create')
