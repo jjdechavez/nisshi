@@ -28,8 +28,7 @@ export default class InvitesController {
 
     await new InviteEmail(invite).sendLater()
     session.flash('success', `Invitation has been resend to ${invite.email}`)
-    response.header('HX-Refresh', true)
-    return response.noContent()
+    return response.redirect().toRoute('systems_invites')
   }
 
   public async confirm({ request, response, params, view }: HttpContextContract) {
