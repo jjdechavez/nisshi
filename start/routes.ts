@@ -24,8 +24,8 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
 
-Route.get('/setup', 'SystemsController.setup').as('setup')
-Route.post('/setup', 'SystemsController.setupStore').as('setup_store')
+Route.get('/setup', 'SetupsController.create').as('setup')
+Route.post('/setup', 'SetupsController.store').as('setup_store')
 Route.get('/login', 'AuthController.login').as('login')
 Route.post('/login', 'AuthController.loginStore').as('login_store')
 Route.get('/logout', 'AuthController.logout').as('logout')

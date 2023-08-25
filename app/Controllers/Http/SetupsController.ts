@@ -4,8 +4,8 @@ import Roles from 'App/Enums/Roles'
 import CreateUserValidator from 'App/Validators/CreateUserValidator'
 import notFoundPage from 'App/Exceptions/NotFoundPage'
 
-export default class SystemsController {
-  public async setup({ response, view }: HttpContextContract) {
+export default class SetupsController {
+  public async create({ response, view }: HttpContextContract) {
     const hasRootUser = await User.first()
     if (hasRootUser) {
       return notFoundPage({ response, view })
@@ -13,7 +13,7 @@ export default class SystemsController {
     return view.render('auth/setup', { redirectTo: '/login' })
   }
 
-  public async setupStore({ response, request, session, view }: HttpContextContract) {
+  public async store({ response, request, session, view }: HttpContextContract) {
     const hasRootUser = await User.findBy('roleId', Roles.ROOT)
     if (hasRootUser) {
       return notFoundPage({ response, view })
