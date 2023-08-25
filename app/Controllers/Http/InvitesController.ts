@@ -22,6 +22,16 @@ export default class InvitesController {
     return response.redirect().toRoute('systems_invites')
   }
 
+  public async resend({ params, session, response }: HttpContextContract) {
+    const id = params.id
+    const invite = await Invite.findOrFail(id)
+
+    await new InviteEmail(invite).sendLater()
+    session.flash('success', `Invitation has been resend to ${invite.email}`)
+    response.header('HX-Refresh', true)
+    return response.noContent()
+  }
+
   public async confirm({ request, response, params, view }: HttpContextContract) {
     const isSignatureValid = request.hasValidSignature()
     const id = params.id

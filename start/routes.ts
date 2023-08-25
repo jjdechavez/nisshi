@@ -39,9 +39,14 @@ Route.group(() => {
 
   Route.group(() => {
     Route.get('/members', 'SystemsController.index').as('systems_members')
-    Route.get('/invites', 'SystemsController.index').as('systems_invites')
-    Route.get('/invites/create', 'InvitesController.create').as('systems_invites_create')
-    Route.post('/invites', 'dashboard/InvitesController.store').as('systems_invites_store')
+
+    Route.group(() => {
+      Route.get('/', 'SystemsController.index').as('systems_invites')
+      Route.get('/create', 'InvitesController.create').as('systems_invites_create')
+      Route.post('/', 'InvitesController.store').as('systems_invites_store')
+      Route.put('/:id', 'InvitesController.resend').as('systems_invites_resend')
+    }).prefix('/invites')
+
     Route.get('/roles', 'SystemsController.roles').as('systems_roles')
   }).prefix('systems')
 })

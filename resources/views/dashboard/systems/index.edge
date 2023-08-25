@@ -81,6 +81,8 @@
                   <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
                     Status
                   </th>
+                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
+                  </th>
                 </tr>
               </thead>
 
@@ -98,6 +100,15 @@
                     </td>
                     <td class="whitespace-nowrap px-4 py-3 text-gray-700">
                       {{ capitalCase(invite.status) }}
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-gray-700" hx-headers='{"x-csrf-token": "{{ csrfToken }}"}'>
+                      @if(['pending', 'expired'].includes(invite.status))
+                        @!button.link({
+                          type: 'button',
+                          name: 'Resend invitation',
+                          "hx-put": route('systems_invites_resend', { id: invite.id }, { qs: { _method: 'PUT'} }),
+                        })
+                      @end
                     </td>
                   </tr>
                 @end
