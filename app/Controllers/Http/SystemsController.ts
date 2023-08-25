@@ -1,32 +1,38 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User'
-import Roles from 'App/Enums/Roles'
-import CreateUserValidator from 'App/Validators/CreateUserValidator'
-import notFoundPage from 'App/Exceptions/NotFoundPage'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class SystemsController {
-  public async setup({ response, view }: HttpContextContract) {
-    const hasRootUser = await User.first()
-    if (hasRootUser) {
-      return notFoundPage({ response, view })
+  public async index({ request, view }: HttpContextContract) {
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
+
+    const payload = {}
+
+    if (request.matchesRoute('systems_members')) {
+      const members = await Database.from('users').paginate(page, limit)
+
+      members.baseUrl('/dashboard/systems/members')
+      Object.assign(payload, { members })
     }
-    return view.render('auth/setup', { redirectTo: '/login' })
+
+    if (request.matchesRoute('systems_invites')) {
+      const invites = await Database.from('invites').paginate(page, limit)
+
+      invites.baseUrl('/dashboard/systems/invites')
+      Object.assign(payload, { invites })
+    }
+
+    return view.render('dashboard/systems/index', payload)
   }
 
-  public async setupStore({ response, request, session, view }: HttpContextContract) {
-    const hasRootUser = await User.findBy('roleId', Roles.ROOT)
-    if (hasRootUser) {
-      return notFoundPage({ response, view })
-    }
+  public async roles({ request, view }: HttpContextContract) {
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
 
-    const payload = await request.validate(CreateUserValidator)
-    await User.create({
-      ...payload,
-      roleId: Roles.ROOT,
-    })
+    const roles = await Database.from('roles').paginate(page, limit)
 
-    session.flash('success', 'Setup has been successfully!')
+    roles.baseUrl('/dashboard/systems/roles')
 
-    return response.redirect().toRoute('login')
+    return view.render('dashboard/systems/roles', { roles })
   }
 }
