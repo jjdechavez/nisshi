@@ -15,34 +15,24 @@
       </header>
 
       <div class="mt-5 py-4 px-4 bg-gray-50">
-        <form>
-          <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead>
-              <tr>
-                <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                  Name
-                </th>
-                <th class="whitespace-nowrap px-4 py-3">
-                </th>
-              </tr>
-            </thead>
-
-            <tbody class="divide-y">
-              @each(role in roles)
-                <tr>
-                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                    <a href="#" class="font-semibold">
-                      <h5>{{ role.name }}</h5>
-                    </a>
-                  </td>
-                  <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-
-                  </td>
-                </tr>
-              @end
-            </tbody>
-          </table>
-        </form>
+        @table.base({
+          data: roles,
+          columns: [
+            { name: 'Name', field: 'name' },
+          ],
+          emptyTitle: 'No roles',
+          emptySubTitle: 'Get started by creating your first role',
+          emptyCta: 'Create role',
+          emptyHref: '#',
+        })
+          @slot('tableData', scope)
+            @if(scope.column.field === 'name')
+              <a href="#" class="font-semibold">
+                <h5>{{ scope.row.name }}</h5>
+              </a>
+            @end
+          @end
+        @end
       </div>
 
       @!pagination.base({
