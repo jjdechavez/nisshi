@@ -1,5 +1,8 @@
 @layout('layouts/dashboard')
-@set('header', 'Systems')
+
+@section('header')
+  @!dashboard.header({ title: 'Systems' })
+@end
 
 @section('content')
   <div class="grid grid-cols-4 gap-4">

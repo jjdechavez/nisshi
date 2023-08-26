@@ -1,6 +1,10 @@
 @layout('layouts/dashboard')
 @set('header', 'Systems')
 
+@section('header')
+  @!dashboard.header({ title: 'Systems' })
+@end
+
 @section('content')
   <div class="grid grid-cols-4 gap-4">
     @include('dashboard/partials/systems/nav')
@@ -34,10 +38,6 @@
           @end
         @end
       </div>
-
-      @!pagination.base({
-        pagination: roles
-      })
 
     </section>
   </div>
