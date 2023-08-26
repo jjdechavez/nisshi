@@ -20,106 +20,73 @@
       @if(request.matchesRoute('systems_members'))
 
         <div class="mt-5 py-4 px-4 bg-gray-50">
-          <form>
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-              <thead>
-                <tr>
-                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                    Name
-                  </th>
-                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                    Role
-                  </th>
-                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody class="divide-y">
-                @each(member in members)
-                  <tr>
-                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      <a href="#" class="font-semibold">
-                        <h5>{{ member.first_name + ' ' + member.last_name }}</h5>
-                      </a>
-                      <span>{{ member.email }}</span>
-                    </td>
-                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      {{ printRole(member.role_id) }}
-                    </td>
-                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      {{ capitalCase(member.status) }}
-                    </td>
-                  </tr>
-                @end
-              </tbody>
-            </table>
-          </form>
+          @table.base({
+            data: members,
+            columns: [
+              { name: 'Name', field: 'name' },
+              { name: 'Role', field: 'role' },
+              { name: 'Status', field: 'status' },
+            ],
+            emptyTitle: 'No members',
+            emptySubTitle: 'Get started by inviting your first member',
+            emptyCta: 'Invite member',
+            emptyHref: route('systems_invites_create'),
+          })
+            @slot('tableData', scope)
+              @if(scope.column.field === 'name')
+                <a href="#" class="font-semibold">
+                  <h5>{{ scope.row.first_name + ' ' + scope.row.last_name }}</h5>
+                </a>
+                <span>{{ scope.row.email }}</span>
+              @elseif(scope.column.field === 'role')
+                {{ printRole(scope.row.role_id) }}
+              @elseif(scope.column.field === 'status')
+                {{ capitalCase(scope.row.status) }}
+              @end
+            @end
+          @end
         </div>
-
-        @!pagination.base({
-          pagination: members
-        })
-
       @end
 
 
       @if(request.matchesRoute('systems_invites'))
 
         <div class="mt-5 py-4 px-4 bg-gray-50">
-          <form>
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-              <thead>
-                <tr>
-                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                    Email
-                  </th>
-                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                    Role
-                  </th>
-                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                    Status
-                  </th>
-                  <th class="whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900">
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody class="divide-y">
-                @each(invite in invites)
-                  <tr>
-                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      <a href="#" class="font-semibold">
-                        <h5>{{ invite.email }}</h5>
-                      </a>
-                      <span>Invited on {{ printDateFromString(invite.created_at) }}</span>
-                    </td>
-                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      {{ printRole(invite.role_id) }}
-                    </td>
-                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      {{ capitalCase(invite.status) }}
-                    </td>
-                    <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                      @if(['pending', 'expired'].includes(invite.status))
-                        @!button.link({
-                          type: 'link',
-                          name: 'Resend invitation',
-                          href: route('systems_invites_resend', { id: invite.id }),
-                        })
-                      @end
-                    </td>
-                  </tr>
+          @table.base({
+            data: invites,
+            columns: [
+              { name: 'Email', field: 'email' },
+              { name: 'Role', field: 'role' },
+              { name: 'Status', field: 'status' },
+              { name: '', field: '_action' }
+            ],
+            emptyTitle: 'No invites',
+            emptySubTitle: 'Get started by inviting your first member',
+            emptyCta: 'Invite member',
+            emptyHref: route('systems_invites_create'),
+          })
+            @slot('tableData', scope)
+              @if(scope.column.field === 'email')
+                <a href="#" class="font-semibold">
+                  <h5>{{ scope.row.email }}</h5>
+                </a>
+                <span>Invited on {{ printDateFromString(scope.row.created_at) }}</span>
+              @elseif(scope.column.field === 'role')
+                {{ printRole(scope.row.role_id) }}
+              @elseif(scope.column.field === 'status')
+                {{ capitalCase(scope.row.status) }}
+              @elseif(scope.column.field === '_action')
+                @if(['pending', 'expired'].includes(scope.row.status))
+                  @!button.link({
+                    type: 'link',
+                    name: 'Resend invitation',
+                    href: route('systems_invites_resend', { id: scope.row.id }),
+                  })
                 @end
-              </tbody>
-            </table>
-          </form>
+              @end
+            @end
+          @end
         </div>
-
-        @!pagination.base({
-          pagination: invites
-        })
 
       @end
 
