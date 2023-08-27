@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import ClientStatus from 'App/Enums/ClientStatus'
+import Member from './Member'
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
@@ -17,4 +18,7 @@ export default class Client extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasMany(() => Member)
+  public members: HasMany<typeof Member>
 }
