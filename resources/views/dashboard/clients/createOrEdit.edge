@@ -1,7 +1,7 @@
 @layout('layouts/dashboard')
 
 @section('header')
-  @dashboard.header({ title: 'Create client' })
+  @dashboard.header({ title: post?.id ? 'Update client' : 'Create new client' })
     @slot('action')
       @!button.secondary({
         type: 'link',
@@ -23,12 +23,10 @@
       @set('action', route('clients_store'))
 
       @if(client?.id)
-        {{--
-        @set('action', route('systems_invites_store'))
-        --}}
+        @set('action', route('clients_update', { id: client.id }, { qs: { _method: 'PUT' } }))
       @end
 
-      <form id="invite_form" action="{{ action }}" method="POST" class="grid gap-y-6">
+      <form id="invite_form" method="POST" action="{{ action }}" class="grid gap-y-6">
         {{ csrfField() }}
 
         @form.control({
@@ -38,7 +36,7 @@
           required: true
         })
           @!form.label({ title: 'Name' })
-          @!form.input({ type: 'text' })
+          @!form.input({ type: 'text', value: client?.name })
           @!form.error()
         @end
 
@@ -54,7 +52,8 @@
               { label: 'Active', value: clientStatus.ACTIVE },
               { label: 'Inactive', value: clientStatus.INACTIVE },
               { label: 'Blocked', value: clientStatus.BLOCKED },
-            ]
+            ],
+            value: client?.status
           })
           @!form.error()
         @end

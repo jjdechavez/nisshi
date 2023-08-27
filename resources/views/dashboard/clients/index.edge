@@ -29,7 +29,7 @@
       @slot('tableData', scope)
         @if (scope.column.field === 'name')
           <div class="leading-5 font-medium">
-            <a href="#" class="hover:underline text-gray-950">
+            <a href="{{ route('clients_show', { id: scope.row.id })}}" class="hover:underline text-gray-950">
               {{ scope.row.name }}
             </a>
           </div>
@@ -43,7 +43,7 @@
             name: 'View'
           })
           @!button.link({
-            href: route('clients_show', { id: scope.row.id }),
+            href: route('clients_edit', { id: scope.row.id }),
             name: 'Edit'
           })
           <form method="POST" action="" class="inline-flex">
