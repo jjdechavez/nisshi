@@ -36,9 +36,15 @@
               <span class="mr-3">
                 {{ client.name }}
               </span>
-              <span class="{{ client.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }} whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold">
-                {{ capitalCase(client.status) }}
-              </span>
+              @if(client.status === ClientStatus.ACTIVE)
+                @badge.success()
+                  {{ client.status }}
+                @end
+              @else
+                @badge.warning()
+                  {{ client.status }}
+                @end
+              @end
             </dd>
           </div>
 

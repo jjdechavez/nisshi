@@ -46,15 +46,17 @@
             href: route('clients_edit', { id: scope.row.id }),
             name: 'Edit'
           })
-          <form method="POST" action="" class="inline-flex">
-            {{ csrfField() }}
-            @!button.link({
-              type: 'submit',
-              href: route('dashboard'),
-              name: 'Delete',
-              className: 'text-red-800 hover:text-red-900'
-            })
-          </form>
+          {{--
+            <form method="POST" action="" class="inline-flex">
+              {{ csrfField() }}
+              @!button.link({
+                type: 'submit',
+                href: route('dashboard'),
+                name: 'Delete',
+                className: 'text-red-800 hover:text-red-900'
+              })
+            </form>
+          --}}
         @else
           <span class="text-sm">{{ scope.row[scope.column.field] }}</span>
         @endif
