@@ -51,6 +51,13 @@
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium leading-6 text-gray-900">Members</dt>
             <dd class="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+              <div class="flex justify-end mb-4">
+                @!button.primary({
+                  type: 'link',
+                  href: route('clients_members_create',{ id: client.id }),
+                  name: 'Add member',
+                })
+              </div>
               <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
                 <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                   <div class="flex w-0 flex-1 items-center">
