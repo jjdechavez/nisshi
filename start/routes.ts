@@ -38,6 +38,13 @@ Route.group(() => {
   Route.get('/teams', 'DashboardController.teams').as('teams')
 
   Route.group(() => {
+    Route.get('/', 'ClientsController.index').as('clients')
+    Route.get('/create', 'ClientsController.create').as('clients_create')
+    Route.post('/', 'ClientsController.store').as('clients_store')
+    Route.get('/:id', 'ClientsController.show').as('clients_show')
+  }).prefix('/clients')
+
+  Route.group(() => {
     Route.get('/members', 'SystemsController.index').as('systems_members')
 
     Route.group(() => {
