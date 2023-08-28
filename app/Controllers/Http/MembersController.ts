@@ -20,4 +20,22 @@ export default class MembersController {
     session.flash('success', `Member ${member.name} has been added successfully!`)
     return response.redirect().toRoute('clients_show', { id: client.id })
   }
+
+  public async edit({ params, view }: HttpContextContract) {
+    const member = await Member.findOrFail(params.memberId)
+    return view.render('dashboard/clients/members/createOrEdit', { member })
+  }
+
+  public async update({ params, request, session, response }: HttpContextContract) {
+    const member = await Member.query()
+      .where('client_id', params.id)
+      .andWhere('id', params.memberId)
+      .firstOrFail()
+    const payload = await request.validate(MemberValidator)
+
+    await member.merge(payload).save()
+
+    session.flash('success', `${member.name} changes were successfully saved!`)
+    return response.redirect().toRoute('clients_show', { id: member.clientId })
+  }
 }

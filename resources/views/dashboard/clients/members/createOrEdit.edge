@@ -24,7 +24,7 @@
         @set('action', route('clients_members_store', { id: clientId }))
 
         @if(member?.id)
-          @set('action', route('clients_update', { id: clientId }, { qs: { _method: 'PUT' } }))
+          @set('action', route('clients_members_update', { id: clientId, memberId: member.id }, { qs: { _method: 'PUT' } }))
         @end
 
       <form id="member_form" method="POST" action="{{ action }}" class="grid gap-y-6">
@@ -48,7 +48,7 @@
           required: true
         })
           @!form.label({ title: 'Position' })
-          @!form.input({ type: 'text', value: member?.name })
+          @!form.input({ type: 'text', value: member?.position })
           @!form.error()
         @end
 
