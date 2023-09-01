@@ -1,0 +1,46 @@
+@layout('layouts/dashboard')
+
+@section('header')
+  @dashboard.header({ title: contactType?.id ? 'Update contact type' : 'Create new contact type' })
+    @slot('action')
+      @!button.secondary({
+        type: 'link',
+        href: route('systems_contact_types'),
+        name: 'Cancel',
+      })
+      @!button.primary({
+        type: 'submit',
+        name: 'Save contact type',
+        form: 'contact_type_form'
+      })
+    @end
+  @end
+@end
+
+@section('content')
+    <section class="grid gap-y-4 w-4/6 mx-auto lg:w-1/2">
+
+      @set('action', route('systems_contact_types_store'))
+
+      @if(contactType?.id)
+        @set('action', route('systems_contact_types_update', { id: contactType.id }, { qs: { _method: 'PUT' } }))
+      @end
+
+      <form id="contact_type_form" method="POST" action="{{ action }}" class="grid gap-y-6">
+        {{ csrfField() }}
+
+        @form.control({
+          name: 'name',
+          placeholder:'Email',
+          errorKey: 'errors.name',
+          required: true
+        })
+          @!form.label({ title: 'Name' })
+          @!form.input({ type: 'text', value: contactType?.name })
+          @!form.error()
+        @end
+
+      </form>
+
+    </section>
+@end

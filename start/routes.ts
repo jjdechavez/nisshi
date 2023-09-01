@@ -62,6 +62,14 @@ Route.group(() => {
     }).prefix('/invites')
 
     Route.get('/roles', 'SystemsController.roles').as('systems_roles')
+
+    Route.group(() => {
+      Route.get('/', 'ContactTypesController.index').as('systems_contact_types')
+      Route.get('/create', 'ContactTypesController.create').as('systems_contact_types_create')
+      Route.post('/', 'ContactTypesController.store').as('systems_contact_types_store')
+      Route.get('/:id/edit', 'ContactTypesController.edit').as('systems_contact_types_edit')
+      Route.put('/:id', 'ContactTypesController.update').as('systems_contact_types_update')
+    }).prefix('/contact-types')
   }).prefix('systems')
 })
   .prefix('dashboard')
