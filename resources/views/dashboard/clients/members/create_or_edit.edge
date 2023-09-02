@@ -1,0 +1,94 @@
+@layout('layouts/dashboard')
+@set('clientId', +request.param('id'))
+
+@section('scripts')
+  @super
+  <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+@end
+
+@section('header')
+  @dashboard.header({ title: member?.id ? 'Update member' : 'Create new member' })
+    @slot('action')
+      @!button.secondary({
+        type: 'link',
+        href: route('clients_show', { id: clientId }),
+        name: 'Cancel',
+      })
+      @!button.primary({
+        type: 'submit',
+        name: 'Save member',
+        form: 'member_form'
+      })
+    @end
+  @end
+@end
+
+@section('content')
+    <section class="grid gap-y-4 w-4/6 mx-auto lg:w-1/2">
+
+        @set('action', route('clients_members_store', { id: clientId }))
+
+        @if(member?.id)
+          @set('action', route('clients_members_update', { id: clientId, memberId: member.id }, { qs: { _method: 'PUT' } }))
+        @end
+
+      <form id="member_form" method="POST" action="{{ action }}" class="grid gap-y-6">
+        {{ csrfField() }}
+
+
+        <section class="grid gap-y-6 border-b border-gray-900/10 pb-12">
+          <header>
+            <h2 class="text-base font-semibold leading-7 text-gray-900">Member</h2>
+          </header>
+
+          @form.control({
+            name: 'name',
+            placeholder: 'John Doe',
+            errorKey: 'errors.name',
+            required: true
+          })
+            @!form.label({ title: 'Name' })
+            @!form.input({ type: 'text', value: member?.name })
+            @!form.error()
+          @end
+
+          @form.control({
+            name: 'position',
+            placeholder: 'Leader',
+            errorKey: 'errors.position',
+            required: true
+          })
+            @!form.label({ title: 'Position' })
+            @!form.input({ type: 'text', value: member?.position })
+            @!form.error()
+          @end
+        </section>
+
+
+        <section class="grid gap-y-6">
+          <header class="flex justify-between items-center">
+            <h2 class="text-base font-semibold leading-7 text-gray-900">Contacts</h2>
+            @!button.link({
+              name: 'Add contact',
+              className: 'px-0',
+              'hx-get': route('clients_members_forms_contact', { id: clientId }),
+              'hx-target': '#contact_list',
+              'hx-swap': 'beforeend',
+            })
+          </header>
+
+          <div id="contact_list" class="grid gap-y-6">
+            @if(member?.contacts?.length === 0)
+              @include('dashboard/partials/clients/members/contact_field')
+            @else
+              @each(contact in member?.contacts)
+                @include('dashboard/partials/clients/members/contact_field')
+              @end
+            @end
+          </div>
+        </section>
+
+      </form>
+
+    </section>
+@end

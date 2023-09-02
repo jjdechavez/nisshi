@@ -5,18 +5,15 @@ export default class MemberValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    name: schema.string([
-      rules.escape(),
-      rules.trim(),
-      rules.minLength(2),
-      rules.maxLength(255),
-    ]),
+    name: schema.string([rules.escape(), rules.trim(), rules.minLength(2), rules.maxLength(255)]),
     position: schema.string([
       rules.escape(),
       rules.trim(),
       rules.minLength(2),
       rules.maxLength(255),
-    ])
+    ]),
+    contactTypeId: schema.array().members(schema.string()),
+    value: schema.array().members(schema.string()),
   })
 
   public messages: CustomMessages = {

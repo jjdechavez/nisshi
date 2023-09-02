@@ -6,8 +6,11 @@
 
 @if(type === "link")
   <a
-    href="{{ href }}"
-    class="{{ defaultClasses }}"
+    {{
+      $props.serializeExcept(['name'], {
+        class: defaultClasses
+      }, false)
+    }}
   >
     {{ name }}
   </a>
