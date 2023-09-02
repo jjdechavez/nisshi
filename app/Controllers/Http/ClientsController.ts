@@ -14,7 +14,7 @@ export default class ClientsController {
 
   public async create({ view }: HttpContextContract) {
     const clientStatus = ClientStatus
-    return view.render('dashboard/clients/createOrEdit', { clientStatus })
+    return view.render('dashboard/clients/create_or_edit', { clientStatus })
   }
 
   public async store({ request, session, response }: HttpContextContract) {
@@ -39,7 +39,7 @@ export default class ClientsController {
   public async edit({ params, view }: HttpContextContract) {
     const client = await Client.findOrFail(params.id)
     const clientStatus = ClientStatus
-    return view.render('dashboard/clients/createOrEdit', { client, clientStatus })
+    return view.render('dashboard/clients/create_or_edit', { client, clientStatus })
   }
 
   public async update({ params, request, session, response }: HttpContextContract) {
