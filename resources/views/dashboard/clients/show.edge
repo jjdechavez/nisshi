@@ -90,10 +90,16 @@
                         <div class="mb-4">
                           <span class="truncate font-medium">Contacts</span>
                         </div>
-                        <div class="flex min-w-0 flex-1 gap-2">
-                          <span class="truncate font-medium">Email</span>
-                          <span class="flex-shrink-0 text-gray-400">test@dot.com</span>
-                        </div>
+                        @if(member.contacts.length === 0)
+                          <span class="truncate font-medium text-gray-400">Does not have contact</span>
+                        @else
+                          @each(contact in member.contacts)
+                            <div class="flex min-w-0 flex-1 gap-2">
+                              <span class="truncate font-medium">{{ contact.contactType.name }}</span>
+                              <span class="flex-shrink-0 text-gray-400">{{ contact.value }}</span>
+                            </div>
+                          @end
+                        @end
                       </section>
                     </li>
                   @end

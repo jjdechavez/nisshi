@@ -27,7 +27,11 @@ export default class ClientsController {
 
   public async show({ params, view }: HttpContextContract) {
     const client = await Client.findOrFail(params.id)
-    await client.load('members')
+    await client.load('members', (memberQuery) => {
+      memberQuery.preload('contacts', (contactQuery) => {
+        contactQuery.preload('contactType')
+      })
+    })
 
     return view.render('dashboard/clients/show', { client })
   }
