@@ -62,6 +62,17 @@ export default class MembersController {
     return view.render('dashboard/partials/clients/members/contact_field', { contactTypes })
   }
 
+  public async destroy({ params, session, response }: HttpContextContract) {
+    const member = await Member.query()
+      .where('id', params.memberId)
+      .andWhere('client_id', params.id)
+      .firstOrFail()
+
+    await member.delete()
+    session.flash('success', `${member.name} was successfully removed!`)
+    return response.status(303).redirect().toRoute('clients_show', { id: member.clientId })
+  }
+
   private parseFormContact({
     contactTypeId,
     value,

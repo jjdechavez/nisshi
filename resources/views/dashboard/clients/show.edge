@@ -1,5 +1,10 @@
 @layout('layouts/dashboard')
 
+@section('scripts')
+  @super
+  <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+@end
+
 @section('header')
   @dashboard.header({ title: 'Client information' })
     @slot('action')
@@ -70,10 +75,18 @@
                             <span class="flex-shrink-0 text-gray-400">{{ member.position }}</span>
                           </div>
                         </div>
-                        <div class="ml-4 flex-shrink-0 flex items-center">
+                        <div class="ml-4 flex-shrink-0 flex items-center" hx-headers='{"x-csrf-token": "{{csrfToken}}"}'>
                           @!button.link({
                             href: route('clients_members_edit', { id: client.id, memberId: member.id }),
                             name: 'Edit',
+                          })
+                          @!button.link({
+                            'hx-delete':  route('clients_members_destroy', { id: client.id, memberId: member.id }, { qs: { _method: 'DELETE' } }),
+                            'hx-confirm': 'Are you sure you want to remove this member?',
+                            'hx-push-url': true,
+                            'hx-target': 'body',
+                            name: 'Delete',
+                            classes: 'text-indigo-600 font-medium decoration-2 hover:underline rounded text-sm px-5 py-1.5 text-center inline-block cursor-pointer'
                           })
                           <button type="button" @click="activeAccordion = !activeAccordion" :aria-expanded="activeAccordion" aria-controls="accordion-panel-{{ member.id }}" class="button group-aria-expanded:button-active">
                             <template x-if="!activeAccordion">
