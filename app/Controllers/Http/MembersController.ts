@@ -79,9 +79,13 @@ export default class MembersController {
   }: {
     name: string
     position: string
-    contactTypeId: string[]
-    value: string[]
+    contactTypeId: string[] | undefined
+    value: string[] | undefined
   }) {
+    if (!contactTypeId || !value) {
+      return []
+    }
+
     const formContacts = contactTypeId.map((id, index) => ({
       contactTypeId: +id,
       value: value[index],

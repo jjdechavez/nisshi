@@ -12,8 +12,8 @@ export default class MemberValidator {
       rules.minLength(2),
       rules.maxLength(255),
     ]),
-    contactTypeId: schema.array().members(schema.string()),
-    value: schema.array().members(schema.string()),
+    contactTypeId: schema.array.optional().members(schema.string()),
+    value: schema.array.optional().members(schema.string()),
   })
 
   public messages: CustomMessages = {

@@ -79,12 +79,8 @@
           </header>
 
           <div id="contact_list" class="grid gap-y-6">
-            @if(member?.contacts?.length === 0)
+            @each(contact in member?.contacts)
               @include('dashboard/partials/clients/members/contact_field')
-            @else
-              @each(contact in member?.contacts)
-                @include('dashboard/partials/clients/members/contact_field')
-              @end
             @end
           </div>
         </section>
