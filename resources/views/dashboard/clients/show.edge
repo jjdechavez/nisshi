@@ -1,0 +1,200 @@
+@layout('layouts/dashboard')
+
+@section('scripts')
+  @super
+  <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+@end
+
+@section('header')
+  @dashboard.header({ title: 'Client information' })
+    @slot('action')
+      @!button.secondary({
+        type: 'link',
+        href: route('clients'),
+        name: 'Redirect to clients'
+      })
+      @!button.primary({
+        type: 'link',
+        href: route('clients_edit', { id: client.id }),
+        name: 'Edit client'
+      })
+    @end
+  @end
+@end
+
+@section('content')
+  <div class="grid gap-y-4">
+
+    <section class="w-full bg-white border border-gray-100 shadow-sm">
+
+      <div class="px-4 py-4 sm:px-4">
+        <h3 class="text-base font-semibold leading-7 text-gray-900">General Information</h3>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Client details and members.</p>
+      </div>
+
+      <div class="border-t border-gray-100">
+        <dl class="divide-y divide-gray-100">
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Name</dt>
+            <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+              <span class="mr-3">
+                {{ client.name }}
+              </span>
+              @if(client.status === ClientStatus.ACTIVE)
+                @badge.success()
+                  {{ client.status }}
+                @end
+              @else
+                @badge.warning()
+                  {{ client.status }}
+                @end
+              @end
+            </dd>
+          </div>
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Members</dt>
+            <dd class="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+              <div class="flex justify-end mb-4">
+                @!button.primary({
+                  type: 'link',
+                  href: route('clients_members_create',{ id: client.id }),
+                  name: 'Add member',
+                })
+              </div>
+              <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                @if(client.members.length)
+                  @each(member in client.members)
+                    <li x-data="{ activeAccordion: false }">
+                      <div class="group flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                        <div class="flex w-0 flex-1 items-center">
+                          @!svg.outlineUser({ className: 'h-5 w-5 flex-shrink-0 text-gray-400' })
+                          <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                            <span class="truncate font-medium">{{ member.name }}</span>
+                            <span class="flex-shrink-0 text-gray-400">{{ member.position }}</span>
+                          </div>
+                        </div>
+                        <div class="ml-4 flex-shrink-0 flex items-center" hx-headers='{"x-csrf-token": "{{csrfToken}}"}'>
+                          @!button.link({
+                            type: 'link',
+                            href: route('clients_members_edit', { id: client.id, memberId: member.id }),
+                            name: 'Edit',
+                          })
+                          @!button.link({
+                            'hx-delete':  route('clients_members_destroy', { id: client.id, memberId: member.id }, { qs: { _method: 'DELETE' } }),
+                            'hx-confirm': 'Are you sure you want to remove this member?',
+                            'hx-push-url': true,
+                            'hx-target': 'body',
+                            name: 'Delete',
+                            type: 'button',
+                          })
+                          <button type="button" @click="activeAccordion = !activeAccordion" :aria-expanded="activeAccordion" aria-controls="accordion-panel-{{ member.id }}" class="button group-aria-expanded:button-active">
+                            <template x-if="!activeAccordion">
+                              @!svg.outlineChevronDown({ className: 'h-5 w-5 text-gray-600' })
+                            </template>
+                            <template x-if="activeAccordion">
+                              @!svg.outlineChevronUp({ className: 'h-5 w-5 text-gray-600' })
+                            </template>
+                          </button>
+                        </div>
+                      </div>
+
+                      <section x-show="activeAccordion" style="display: none;" :hidden="!activeAccordion" id="accordion-panel-{{ member.id }}" aria-labelledby="accordion-header-{{ member.id }}" class="py-4 pl-[3.2rem] pr-5 text-sm leading-6 border-t border-t-gray-100">
+                        <div class="mb-4">
+                          <span class="truncate font-medium">Contacts</span>
+                        </div>
+                        @if(member.contacts.length === 0)
+                          <span class="truncate font-medium text-gray-400">Does not have contact</span>
+                        @else
+                          @each(contact in member.contacts)
+                            <div class="flex min-w-0 flex-1 gap-2">
+                              <span class="truncate font-medium">{{ contact.contactType.name }}</span>
+                              <span class="flex-shrink-0 text-gray-400">{{ contact.value }}</span>
+                            </div>
+                          @end
+                        @end
+                      </section>
+                    </li>
+                  @end
+                @else
+                  @!empty({
+                    title: 'No members',
+                    subtitle: 'Get started by adding your first member',
+                    showCta: false
+                  })
+                @end
+              </ul>
+            </dd>
+          </div>
+
+        </dl>
+      </div>
+
+    </section>
+
+
+    <section class="w-full bg-white border border-gray-100 shadow-sm">
+
+      <div class="px-4 py-4 sm:px-4">
+        <h3 class="text-base font-semibold leading-7 text-gray-900">Projects</h3>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Client projects and status</p>
+      </div>
+
+      <div class="border-t border-gray-100">
+        <dl class="divide-y divide-gray-100">
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Name</dt>
+            <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+              <span class="mr-3">
+                {{ client.name }}
+              </span>
+              <span class="{{ client.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }} whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold">
+                {{ capitalCase(client.status) }}
+              </span>
+            </dd>
+          </div>
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Members</dt>
+            <dd class="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+              <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                  <div class="flex w-0 flex-1 items-center">
+                    <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                      <span class="truncate font-medium">resume_back_end_developer.pdf</span>
+                      <span class="flex-shrink-0 text-gray-400">2.4mb</span>
+                    </div>
+                  </div>
+                  <div class="ml-4 flex-shrink-0">
+                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
+                  </div>
+                </li>
+                <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                  <div class="flex w-0 flex-1 items-center">
+                    <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                      <span class="truncate font-medium">coverletter_back_end_developer.pdf</span>
+                      <span class="flex-shrink-0 text-gray-400">4.5mb</span>
+                    </div>
+                  </div>
+                  <div class="ml-4 flex-shrink-0">
+                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
+                  </div>
+                </li>
+              </ul>
+            </dd>
+          </div>
+
+        </dl>
+      </div>
+
+    </section>
+  </div>
+@end

@@ -1,0 +1,64 @@
+@layout('layouts/dashboard')
+
+@section('header')
+  @dashboard.header({ title: post?.id ? 'Update client' : 'Create new client' })
+    @slot('action')
+      @!button.secondary({
+        type: 'link',
+        href: route('clients'),
+        name: 'Cancel',
+      })
+      @!button.primary({
+        type: 'submit',
+        name: 'Save client',
+        form: 'invite_form'
+      })
+    @end
+  @end
+@end
+
+@section('content')
+    <section class="grid gap-y-4 w-4/6 mx-auto lg:w-1/2">
+
+      @set('action', route('clients_store'))
+
+      @if(client?.id)
+        @set('action', route('clients_update', { id: client.id }, { qs: { _method: 'PUT' } }))
+      @end
+
+      <form id="invite_form" method="POST" action="{{ action }}" class="grid gap-y-6">
+        {{ csrfField() }}
+
+        @form.control({
+          name: 'name',
+          placeholder:'Origami',
+          errorKey: 'errors.name',
+          required: true
+        })
+          @!form.label({ title: 'Name' })
+          @!form.input({ type: 'text', value: client?.name })
+          @!form.error()
+        @end
+
+        @form.control({
+          name: 'status',
+          placeholder: 'Status',
+          required: true,
+          errorKey: 'errors.status'
+        })
+          @!form.label({ title: 'Status' })
+          @!form.select({
+            options: [
+              { label: 'Active', value: clientStatus.ACTIVE },
+              { label: 'Inactive', value: clientStatus.INACTIVE },
+              { label: 'Blocked', value: clientStatus.BLOCKED },
+            ],
+            value: client?.status
+          })
+          @!form.error()
+        @end
+
+      </form>
+
+    </section>
+@end

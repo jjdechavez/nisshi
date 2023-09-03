@@ -10,29 +10,36 @@
 
     <section class="col-span-3 px-4">
       <header class="flex justify-between items-center">
-        <h2 class="leading-4 font-semibold text-gray-900 text-2xl">Roles</h2>
+        <h2 class="leading-4 font-semibold text-gray-900 text-2xl">Contact Types</h2>
         @!button.primary({
           type: 'link',
-          name: 'Add role',
+          name: 'Add contact type',
+          href: route('systems_contact_types_create'),
         })
       </header>
 
       <div class="mt-5 py-4 px-4 bg-gray-50">
         @table.base({
-          data: roles,
+          data: contactTypes,
           columns: [
             { name: 'Name', field: 'name' },
+            { name: '', field: '_actions' },
           ],
-          emptyTitle: 'No roles',
-          emptySubTitle: 'Get started by creating your first role',
-          emptyCta: 'Create role',
-          emptyHref: '#',
+          emptyTitle: 'No contact types',
+          emptySubTitle: 'Get started by creating your first contact type',
+          emptyCtaShow: false
         })
           @slot('tableData', scope)
             @if(scope.column.field === 'name')
               <a href="#" class="font-semibold">
                 <h5>{{ scope.row.name }}</h5>
               </a>
+            @elseif (scope.column.field === '_actions')
+              @!button.link({
+                type: 'link',
+                href: route('systems_contact_types_edit', { id: scope.row.id }),
+                name: 'Edit'
+              })
             @end
           @end
         @end

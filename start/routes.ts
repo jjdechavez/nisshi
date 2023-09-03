@@ -36,9 +36,44 @@ Route.post('/invites/:id/confirm', 'InvitesController.confirmStore').as('invites
 Route.group(() => {
   Route.get('/', 'DashboardController.index').as('dashboard')
   Route.get('/teams', 'DashboardController.teams').as('teams')
-  Route.get('/systems/members', 'SystemsController.index').as('systems_members')
-  Route.get('/systems/invites', 'SystemsController.index').as('systems_invites')
-  Route.get('/systems/invites/create', 'InvitesController.create').as('systems_invites_create')
-  Route.post('/systems/invites', 'dashboard/InvitesController.store').as('systems_invites_store')
-  Route.get('/systems/roles', 'SystemsController.roles').as('systems_roles')
-}).prefix('dashboard')
+
+  Route.group(() => {
+    Route.get('/', 'ClientsController.index').as('clients')
+    Route.get('/create', 'ClientsController.create').as('clients_create')
+    Route.post('/', 'ClientsController.store').as('clients_store')
+    Route.get('/:id', 'ClientsController.show').as('clients_show')
+    Route.get('/:id/edit', 'ClientsController.edit').as('clients_edit')
+    Route.put('/:id', 'ClientsController.update').as('clients_update')
+
+    Route.get('/:id/members/create', 'MembersController.create').as('clients_members_create')
+    Route.post('/:id/members', 'MembersController.store').as('clients_members_store')
+    Route.get('/:id/members/:memberId/edit', 'MembersController.edit').as('clients_members_edit')
+    Route.put('/:id/members/:memberId', 'MembersController.update').as('clients_members_update')
+    Route.delete('/:id/members/:memberId', 'MembersController.destroy').as('clients_members_destroy')
+
+    Route.get('/:id/members/forms/contact', 'MembersController.contactField').as('clients_members_forms_contact')
+  }).prefix('/clients')
+
+  Route.group(() => {
+    Route.get('/members', 'SystemsController.index').as('systems_members')
+
+    Route.group(() => {
+      Route.get('/', 'SystemsController.index').as('systems_invites')
+      Route.get('/create', 'InvitesController.create').as('systems_invites_create')
+      Route.post('/', 'InvitesController.store').as('systems_invites_store')
+      Route.get('/:id/resend', 'InvitesController.resend').as('systems_invites_resend')
+    }).prefix('/invites')
+
+    Route.get('/roles', 'SystemsController.roles').as('systems_roles')
+
+    Route.group(() => {
+      Route.get('/', 'ContactTypesController.index').as('systems_contact_types')
+      Route.get('/create', 'ContactTypesController.create').as('systems_contact_types_create')
+      Route.post('/', 'ContactTypesController.store').as('systems_contact_types_store')
+      Route.get('/:id/edit', 'ContactTypesController.edit').as('systems_contact_types_edit')
+      Route.put('/:id', 'ContactTypesController.update').as('systems_contact_types_update')
+    }).prefix('/contact-types')
+  }).prefix('systems')
+})
+  .prefix('dashboard')
+  .middleware('auth')

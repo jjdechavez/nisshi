@@ -1,0 +1,68 @@
+@layout('layouts/dashboard')
+
+@section('header')
+  @dashboard.header({ title: 'Clients' })
+    @slot('action')
+      @!button.primary({
+        type: 'link',
+        name: 'Create client',
+        href: route('clients_create'),
+      })
+    @end
+  @end
+@end
+
+@section('content')
+
+  <div class="mt-5 py-4 px-4 bg-gray-50">
+    @table.base({
+      data: clients,
+      columns: [
+        { name: 'Name', field: 'name' },
+        { name: 'Status', field: 'status' },
+        { name: '', field: '_actions' },
+      ],
+      emptyTitle: 'No clients',
+      emptySubTitle: 'Get started by creating your first client',
+      emptyCtaShow: false
+    })
+      @slot('tableData', scope)
+        @if (scope.column.field === 'name')
+          <div class="leading-5 font-medium">
+            <a href="{{ route('clients_show', { id: scope.row.id })}}" class="hover:underline text-gray-950">
+              {{ scope.row.name }}
+            </a>
+          </div>
+        @elseif (scope.column.field === 'status')
+          <div class="text-gray-800 capitalize">
+            {{ scope.row.status }}
+          </div>
+        @elseif (scope.column.field === '_actions')
+          @!button.link({
+            type: 'link',
+            href: route('clients_show', { id: scope.row.id }),
+            name: 'View'
+          })
+          @!button.link({
+            type: 'link',
+            href: route('clients_edit', { id: scope.row.id }),
+            name: 'Edit'
+          })
+          {{--
+            <form method="POST" action="" class="inline-flex">
+              {{ csrfField() }}
+              @!button.link({
+                type: 'submit',
+                href: route('dashboard'),
+                name: 'Delete',
+                className: 'text-red-800 hover:text-red-900'
+              })
+            </form>
+          --}}
+        @else
+          <span class="text-sm">{{ scope.row[scope.column.field] }}</span>
+        @endif
+      @end
+    @end
+  </div>
+@end

@@ -1,5 +1,8 @@
 @layout('layouts/dashboard')
-@set('header', 'Teams')
+
+@section('header')
+  @!dashboard.header({ title: 'Teams' })
+@end
 
 @section('content')
   <h2>hello</h2>
