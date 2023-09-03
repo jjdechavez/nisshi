@@ -39,10 +39,12 @@
           </div>
         @elseif (scope.column.field === '_actions')
           @!button.link({
+            type: 'link',
             href: route('clients_show', { id: scope.row.id }),
             name: 'View'
           })
           @!button.link({
+            type: 'link',
             href: route('clients_edit', { id: scope.row.id }),
             name: 'Edit'
           })

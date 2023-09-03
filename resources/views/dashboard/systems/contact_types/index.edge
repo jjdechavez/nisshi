@@ -36,6 +36,7 @@
               </a>
             @elseif (scope.column.field === '_actions')
               @!button.link({
+                type: 'link',
                 href: route('systems_contact_types_edit', { id: scope.row.id }),
                 name: 'Edit'
               })

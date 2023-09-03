@@ -77,6 +77,7 @@
                         </div>
                         <div class="ml-4 flex-shrink-0 flex items-center" hx-headers='{"x-csrf-token": "{{csrfToken}}"}'>
                           @!button.link({
+                            type: 'link',
                             href: route('clients_members_edit', { id: client.id, memberId: member.id }),
                             name: 'Edit',
                           })
@@ -86,7 +87,7 @@
                             'hx-push-url': true,
                             'hx-target': 'body',
                             name: 'Delete',
-                            classes: 'text-indigo-600 font-medium decoration-2 hover:underline rounded text-sm px-5 py-1.5 text-center inline-block cursor-pointer'
+                            type: 'button',
                           })
                           <button type="button" @click="activeAccordion = !activeAccordion" :aria-expanded="activeAccordion" aria-controls="accordion-panel-{{ member.id }}" class="button group-aria-expanded:button-active">
                             <template x-if="!activeAccordion">

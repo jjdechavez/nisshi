@@ -69,6 +69,7 @@
           <header class="flex justify-between items-center">
             <h2 class="text-base font-semibold leading-7 text-gray-900">Contacts</h2>
             @!button.link({
+              type: 'button',
               name: 'Add contact',
               className: 'px-0',
               'hx-get': route('clients_members_forms_contact', { id: clientId }),
