@@ -14,7 +14,7 @@
         @!button.primary({
           type: 'link',
           name: 'Add project status',
-          href: route('systems_contact_types_create'),
+          href: route('systems_project_statuses_create'),
         })
       </header>
 
@@ -37,7 +37,7 @@
             @elseif (scope.column.field === '_actions')
               @!button.link({
                 type: 'link',
-                href: route('systems_contact_types_edit', { id: scope.row.id }),
+                href: route('systems_project_statuses_edit', { id: scope.row.id }),
                 name: 'Edit'
               })
             @end

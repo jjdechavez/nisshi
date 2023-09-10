@@ -76,6 +76,10 @@ Route.group(() => {
 
     Route.group(() => {
       Route.get('/', 'ProjectStatusesController.index').as('systems_project_statuses')
+      Route.get('/create', 'ProjectStatusesController.create').as('systems_project_statuses_create')
+      Route.post('/', 'ProjectStatusesController.store').as('systems_project_statuses_store')
+      Route.get('/:id/edit', 'ProjectStatusesController.edit').as('systems_project_statuses_edit')
+      Route.put('/:id', 'ProjectStatusesController.update').as('systems_project_statuses_update')
     }).prefix('/project-statuses')
   }).prefix('systems')
 })
