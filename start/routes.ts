@@ -73,6 +73,10 @@ Route.group(() => {
       Route.get('/:id/edit', 'ContactTypesController.edit').as('systems_contact_types_edit')
       Route.put('/:id', 'ContactTypesController.update').as('systems_contact_types_update')
     }).prefix('/contact-types')
+
+    Route.group(() => {
+      Route.get('/', 'ProjectStatusesController.index').as('systems_project_statuses')
+    }).prefix('/project-statuses')
   }).prefix('systems')
 })
   .prefix('dashboard')
