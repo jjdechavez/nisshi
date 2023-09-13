@@ -1,0 +1,75 @@
+@layout('layouts/dashboard')
+@set('clientId', +request.param('id'))
+
+@section('header')
+  @dashboard.header({ title: project?.id ? 'Update project' : 'Create new project' })
+    @slot('action')
+      @!button.secondary({
+        type: 'link',
+        href: route('clients_show', { id: clientId }),
+        name: 'Cancel',
+      })
+      @!button.primary({
+        type: 'submit',
+        name: 'Save member',
+        form: 'project_form'
+      })
+    @end
+  @end
+@end
+
+@section('content')
+    <section class="grid gap-y-4 w-4/6 mx-auto lg:w-1/2">
+
+        @set('action', route('clients_projects_store', { id: clientId }))
+
+        @if(project?.id)
+          @set('action', route('clients_members_update', { id: clientId, projectId: project.id }, { qs: { _method: 'PUT' } }))
+        @end
+
+      <form id="project_form" method="POST" action="{{ action }}" class="grid gap-y-6">
+        {{ csrfField() }}
+
+        <section class="grid gap-y-6">
+
+          @form.control({
+            name: 'code',
+            placeholder: 'OGI',
+            errorKey: 'errors.name',
+            required: true
+          })
+            @!form.label({ title: 'Code' })
+            @!form.input({ type: 'text', value: project?.code, maxLength: '3' })
+            @!form.error()
+          @end
+
+          @form.control({
+            name: 'name',
+            placeholder: 'Origami',
+            errorKey: 'errors.name',
+            required: true
+          })
+            @!form.label({ title: 'Name' })
+            @!form.input({ type: 'text', value: project?.name })
+            @!form.error()
+          @end
+
+          @form.control({
+            name: 'projectStatusId',
+            errorKey: 'errors.projectStatusId',
+            required: true
+          })
+            @!form.label({ title: 'Status' })
+            @!form.select({
+              options: projectStatus,
+              value: project?.projectStatusId
+            })
+            @!form.error()
+          @end
+        </section>
+
+
+      </form>
+
+    </section>
+@end

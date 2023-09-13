@@ -52,6 +52,9 @@ Route.group(() => {
     Route.delete('/:id/members/:memberId', 'MembersController.destroy').as('clients_members_destroy')
 
     Route.get('/:id/members/forms/contact', 'MembersController.contactField').as('clients_members_forms_contact')
+
+    Route.get('/:id/projects/create', 'ProjectsController.create').as('clients_projects_create')
+    Route.post('/:id/projects', 'ProjectsController.store').as('clients_projects_store')
   }).prefix('/clients')
 
   Route.group(() => {
