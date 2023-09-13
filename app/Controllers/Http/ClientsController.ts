@@ -32,6 +32,9 @@ export default class ClientsController {
         contactQuery.preload('contactType')
       })
     })
+    await client.load('projects', (projectQuery) => {
+      projectQuery.preload('projectStatus')
+    })
 
     return view.render('dashboard/clients/show', { client })
   }

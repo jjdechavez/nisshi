@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import ClientStatus from 'App/Enums/ClientStatus'
 import Member from './Member'
+import Project from './Project'
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
@@ -21,4 +22,7 @@ export default class Client extends BaseModel {
 
   @hasMany(() => Member)
   public members: HasMany<typeof Member>
+
+  @hasMany(() => Project)
+  public projects: HasMany<typeof Project>
 }

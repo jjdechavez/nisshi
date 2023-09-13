@@ -152,9 +152,11 @@
       <div class="border-t border-gray-100">
         <div class="py-4 px-4">
           @table.base({
-            data: [],
+            data: client.projects,
             columns: [
+              { name: 'Code', field: 'code' },
               { name: 'Name', field: 'name' },
+              { name: 'Status', field: 'projectStatus' },
               { name: '', field: '_actions' },
             ],
             emptyTitle: 'No available projects',
@@ -162,10 +164,22 @@
             emptyCtaShow: false
           })
             @slot('tableData', scope)
-              @if(scope.column.field === 'name')
+              @if(scope.column.field === 'code')
                 <a href="#" class="font-semibold">
-                  <h5>{{ scope.row.name }}</h5>
+                  <h5>{{ scope.row.code }}</h5>
                 </a>
+              @elseif(scope.column.field === 'name')
+                <h5>{{ scope.row.name }}</h5>
+              @elseif(scope.column.field === 'projectStatus')
+                @if(scope.row.projectStatus.name === 'Active')
+                  @badge.success()
+                    {{ scope.row.projectStatus.name }}
+                  @end
+                @else
+                  @badge.warning()
+                    {{ scope.row.projectStatus.name }}
+                  @end
+                @end
               @elseif (scope.column.field === '_actions')
                 @!button.link({
                   type: 'link',
