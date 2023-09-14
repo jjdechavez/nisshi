@@ -52,6 +52,11 @@ Route.group(() => {
     Route.delete('/:id/members/:memberId', 'MembersController.destroy').as('clients_members_destroy')
 
     Route.get('/:id/members/forms/contact', 'MembersController.contactField').as('clients_members_forms_contact')
+
+    Route.get('/:id/projects/create', 'ProjectsController.create').as('clients_projects_create')
+    Route.post('/:id/projects', 'ProjectsController.store').as('clients_projects_store')
+    Route.get('/:id/projects/:projectId/edit', 'ProjectsController.edit').as('clients_projects_edit')
+    Route.put('/:id/projects/:projectId', 'ProjectsController.update').as('clients_projects_update')
   }).prefix('/clients')
 
   Route.group(() => {
@@ -73,6 +78,14 @@ Route.group(() => {
       Route.get('/:id/edit', 'ContactTypesController.edit').as('systems_contact_types_edit')
       Route.put('/:id', 'ContactTypesController.update').as('systems_contact_types_update')
     }).prefix('/contact-types')
+
+    Route.group(() => {
+      Route.get('/', 'ProjectStatusesController.index').as('systems_project_statuses')
+      Route.get('/create', 'ProjectStatusesController.create').as('systems_project_statuses_create')
+      Route.post('/', 'ProjectStatusesController.store').as('systems_project_statuses_store')
+      Route.get('/:id/edit', 'ProjectStatusesController.edit').as('systems_project_statuses_edit')
+      Route.put('/:id', 'ProjectStatusesController.update').as('systems_project_statuses_update')
+    }).prefix('/project-statuses')
   }).prefix('systems')
 })
   .prefix('dashboard')
