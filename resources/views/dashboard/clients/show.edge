@@ -183,7 +183,7 @@
               @elseif (scope.column.field === '_actions')
                 @!button.link({
                   type: 'link',
-                  href: route('systems_project_statuses_edit', { id: scope.row.id }),
+                  href: route('clients_projects_edit', { id: scope.row.clientId, projectId: scope.row.id }),
                   name: 'Edit'
                 })
               @end

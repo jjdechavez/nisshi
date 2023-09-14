@@ -1,5 +1,7 @@
 @layout('layouts/dashboard')
 @set('clientId', +request.param('id'))
+@set('rawProjectStatuses', await loadProjectStatuses())
+@set('projectStatus', toOptions(rawProjectStatuses, { label: 'name', value: 'id' }))
 
 @section('header')
   @dashboard.header({ title: project?.id ? 'Update project' : 'Create new project' })
@@ -11,7 +13,7 @@
       })
       @!button.primary({
         type: 'submit',
-        name: 'Save member',
+        name: 'Save project',
         form: 'project_form'
       })
     @end
@@ -24,7 +26,7 @@
         @set('action', route('clients_projects_store', { id: clientId }))
 
         @if(project?.id)
-          @set('action', route('clients_members_update', { id: clientId, projectId: project.id }, { qs: { _method: 'PUT' } }))
+          @set('action', route('clients_projects_update', { id: clientId, projectId: project.id }, { qs: { _method: 'PUT' } }))
         @end
 
       <form id="project_form" method="POST" action="{{ action }}" class="grid gap-y-6">
@@ -35,11 +37,12 @@
           @form.control({
             name: 'code',
             placeholder: 'OGI',
-            errorKey: 'errors.name',
+            errorKey: 'errors.code',
             required: true
           })
             @!form.label({ title: 'Code' })
-            @!form.input({ type: 'text', value: project?.code, maxLength: '3' })
+            @!form.input({ type: 'text', value: project?.code, maxLength: '3', readonly: !!project?.code })
+            @!form.help({ title: '3 characters only. This cannot be changed.' })
             @!form.error()
           @end
 

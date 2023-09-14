@@ -12,16 +12,11 @@ import Role from 'App/Models/Role'
 import Roles from 'App/Enums/Roles'
 import { DateTime } from 'luxon'
 import ClientStatus from 'App/Enums/ClientStatus'
+import ProjectStatus from 'App/Models/ProjectStatus'
 
 View.global('Roles', Roles)
 View.global('loadRoles', function () {
   return Role.query().whereNot('id', Roles.ROOT).select('id', 'name')
-})
-View.global('toRoleOptions', function (roles: Role[]) {
-  return roles.map((role) => ({
-    label: role.name,
-    value: role.id,
-  }))
 })
 View.global('printRole', function (roleId: number) {
   if (roleId === Roles.ROOT) {
@@ -47,3 +42,15 @@ View.global('printDateFromString', function (date: string) {
 })
 
 View.global('ClientStatus', ClientStatus)
+View.global('loadProjectStatuses', function () {
+  return ProjectStatus.query().select('id', 'name')
+})
+
+View.global('toOptions', function <
+  T,
+>(list: Array<T>, { label, value }: { label: string; value: string }) {
+  return list.map((item) => ({
+    label: item[label],
+    value: item[value],
+  }))
+})

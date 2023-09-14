@@ -55,6 +55,8 @@ Route.group(() => {
 
     Route.get('/:id/projects/create', 'ProjectsController.create').as('clients_projects_create')
     Route.post('/:id/projects', 'ProjectsController.store').as('clients_projects_store')
+    Route.get('/:id/projects/:projectId/edit', 'ProjectsController.edit').as('clients_projects_edit')
+    Route.put('/:id/projects/:projectId', 'ProjectsController.update').as('clients_projects_update')
   }).prefix('/clients')
 
   Route.group(() => {
