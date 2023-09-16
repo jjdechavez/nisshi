@@ -19,6 +19,24 @@ export default class ProjectsController {
     return view.render('dashboard/projects/show', { project })
   }
 
+  public async edit({ params, view }: HttpContextContract) {
+    const project = await Project.findOrFail(params.id)
+    await project.load('projectStatus')
+
+    return view.render('dashboard/projects/edit', { project })
+  }
+
+  public async update(ctx: HttpContextContract) {
+    const { params, request, session, response } = ctx
+    const project = await Project.findOrFail(params.id)
+    const payload = await request.validate(new ProjectValidator(ctx, project))
+
+    await project.merge(payload).save()
+
+    session.flash('success', `${project.name} changes were successfully saved!`)
+    return response.redirect().toRoute('projects_show', { id: project.id })
+  }
+
   public async createClientProject({ view }: HttpContextContract) {
     return view.render('dashboard/clients/projects/create_or_edit')
   }

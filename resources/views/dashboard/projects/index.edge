@@ -42,13 +42,11 @@
             href: route('projects_show', { id: scope.row.id }),
             name: 'View'
           })
-          {{--
           @!button.link({
             type: 'link',
-            href: route('clients_projects_edit', { id: scope.row.clientId, projectId: scope.row.id }),
+            href: route('projects_edit', { id: scope.row.id }),
             name: 'Edit'
           })
-          --}}
         @end
       @end
     @end
