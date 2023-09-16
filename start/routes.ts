@@ -53,10 +53,10 @@ Route.group(() => {
 
     Route.get('/:id/members/forms/contact', 'MembersController.contactField').as('clients_members_forms_contact')
 
-    Route.get('/:id/projects/create', 'ProjectsController.create').as('clients_projects_create')
-    Route.post('/:id/projects', 'ProjectsController.store').as('clients_projects_store')
-    Route.get('/:id/projects/:projectId/edit', 'ProjectsController.edit').as('clients_projects_edit')
-    Route.put('/:id/projects/:projectId', 'ProjectsController.update').as('clients_projects_update')
+    Route.get('/:id/projects/create', 'ProjectsController.createClientProject').as('clients_projects_create')
+    Route.post('/:id/projects', 'ProjectsController.storeClientProject').as('clients_projects_store')
+    Route.get('/:id/projects/:projectId/edit', 'ProjectsController.editClientProject').as('clients_projects_edit')
+    Route.put('/:id/projects/:projectId', 'ProjectsController.updateClientProject').as('clients_projects_update')
   }).prefix('/clients')
 
   Route.group(() => {
