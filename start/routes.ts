@@ -60,6 +60,11 @@ Route.group(() => {
   }).prefix('/clients')
 
   Route.group(() => {
+    Route.get('/', 'ProjectsController.index').as('projects')
+    Route.get('/:id', 'ProjectsController.show').as('projects_show')
+  }).prefix('/projects')
+
+  Route.group(() => {
     Route.get('/members', 'SystemsController.index').as('systems_members')
 
     Route.group(() => {

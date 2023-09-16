@@ -4,6 +4,21 @@ import Project from 'App/Models/Project'
 import ProjectValidator from 'App/Validators/ProjectValidator'
 
 export default class ProjectsController {
+  public async index({ request, view }: HttpContextContract) {
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
+    const projects = await Project.query().preload('projectStatus').paginate(page, limit)
+
+    return view.render('dashboard/projects/index', { projects })
+  }
+
+  public async show({ params, view }: HttpContextContract) {
+    const project = await Project.findOrFail(params.id)
+    await project.load('projectStatus')
+
+    return view.render('dashboard/projects/show', { project })
+  }
+
   public async createClientProject({ view }: HttpContextContract) {
     return view.render('dashboard/clients/projects/create_or_edit')
   }
