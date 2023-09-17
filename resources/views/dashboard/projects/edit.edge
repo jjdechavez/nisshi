@@ -2,6 +2,11 @@
 @set('rawProjectStatuses', await loadProjectStatuses())
 @set('projectStatus', toOptions(rawProjectStatuses, { label: 'name', value: 'id' }))
 
+@section('scripts')
+  @super
+  <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+@end
+
 @section('header')
   @dashboard.header({ title: 'Update project' })
     @slot('action')
@@ -64,8 +69,45 @@
             })
             @!form.error()
           @end
-        </section>
 
+          @form.control({
+            name: 'tag',
+            errorKey: 'errors.tags',
+          })
+            @!form.label({ title: 'Tags' })
+            @!form.input({
+              type: 'search',
+              'hx-get': route('tags_search_item'),
+              'hx-trigger': 'keyup changed delay:500ms, search, click',
+              'hx-target': '#project_tag_options',
+            })
+            <div class="relative">
+              <div class="absolute z-10 w-full mt-3 rounded-lg border border-gray-100 bg-white shadow-lg">
+                <ul id="project_tag_options" hx-include="[name='tags[]']" hx-include="[name='tagTypes[]']" class="max-h-64 space-y-1 overflow-auto p-2 hidden">
+                </ul>
+              </div>
+            </div>
+
+            <div id="project_tags" class="mt-4 flex flex-wrap gap-2">
+            </div>
+          @end
+
+          <script>
+            const tagInput = document.querySelector('input[name="tag"]')
+            tagInput.addEventListener('focus', () => {
+              const projectTagOptionElement = document.querySelector('#project_tag_options')
+              projectTagOptionElement.classList.remove('hidden')
+            })
+
+            function selectTag() {
+              const projectTagOptionElement = document.querySelector('#project_tag_options')
+              projectTagOptionElement.classList.add('hidden')
+
+              tagInput.value = ''
+            }
+          </script>
+
+        </section>
 
       </form>
 

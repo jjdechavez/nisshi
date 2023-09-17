@@ -67,6 +67,12 @@ Route.group(() => {
   }).prefix('/projects')
 
   Route.group(() => {
+    Route.get('/search/items', 'TagsController.searchTag').as('tags_search_item')
+    Route.get('/select/items', 'TagsController.selectTag').as('tags_select_item')
+    Route.delete('/unselect/items', 'TagsController.unselectTag').as('tags_unselect_item')
+  }).prefix('/tags')
+
+  Route.group(() => {
     Route.get('/members', 'SystemsController.index').as('systems_members')
 
     Route.group(() => {
