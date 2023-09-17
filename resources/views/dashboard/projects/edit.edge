@@ -73,6 +73,7 @@
           @form.control({
             name: 'tag',
             errorKey: 'errors.tags',
+            id: 'tag_field'
           })
             @!form.label({ title: 'Tags' })
             @!form.input({
@@ -94,9 +95,23 @@
 
           <script>
             const tagInput = document.querySelector('input[name="tag"]')
-            tagInput.addEventListener('focus', () => {
+            tagInput.addEventListener('focus', (event) => {
               const projectTagOptionElement = document.querySelector('#project_tag_options')
               projectTagOptionElement.classList.remove('hidden')
+            })
+
+            const tagField = document.querySelector('#tag_field')
+            tagField.addEventListener('focusout', function() {
+              const projectTagOptionElement = document.querySelector('#project_tag_options')
+
+              projectTagOptionElement.dataset.timer = setTimeout(function() {
+                projectTagOptionElement.classList.add('hidden')
+              }, 150)
+            })
+
+            tagField.addEventListener('focusin', function() {
+              const projectTagOptionElement = document.querySelector('#project_tag_options')
+              clearTimeout(projectTagOptionElement.dataset.timer)
             })
 
             function selectTag() {

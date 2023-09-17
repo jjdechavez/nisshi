@@ -1,4 +1,9 @@
 @inject({ ...$props.all() })
-<div class="text-sm">
+<div
+  @if(id)
+    id="{{ id }}"
+  @end
+  class="text-sm"
+>
   {{{ await $slots.main() }}}
 </div>
