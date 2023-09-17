@@ -1,8 +1,6 @@
 @inject({ ...$props.all() })
 <div
-  @if(id)
-    id="{{ id }}"
-  @end
+  {{ $props.serializeExcept(['name', 'placeholder', 'required', 'errorKey']) }}
   class="text-sm"
 >
   {{{ await $slots.main() }}}
