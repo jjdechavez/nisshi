@@ -24,8 +24,10 @@ export default class ProjectsController {
   public async edit({ params, view }: HttpContextContract) {
     const project = await Project.findOrFail(params.id)
     await project.load('projectStatus')
+    await project.load('tags')
+    const projectTagIds = project.tags.map((tag) => tag.id)
 
-    const tags = await Tag.all()
+    const tags = await Tag.query().whereNotIn('id', projectTagIds)
 
     return view.render('dashboard/projects/edit', { project, tags })
   }

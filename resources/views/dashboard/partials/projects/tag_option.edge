@@ -1,4 +1,4 @@
-@if(tags.length === 0)
+@if(searchState === 'not-found')
   <li>
     <div
       hx-get="{{ route('tags_select_item') }}"
@@ -12,20 +12,38 @@
       Add {{ search }} as tag
     </div>
   </li>
-@else
-  @each(tag in tags)
+@end
+
+@if (searchState === 'exist')
+  <li>
+    <div class="rounded-md px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 focus:bg-gray-50">
+      Tag not found
+    </div>
+  </li>
+@end
+
+@if (searchState === 'result')
+  @if(tags.length === 0)
     <li>
-      <div
-        hx-get="{{ route('tags_select_item') }}"
-        hx-trigger="click"
-        hx-target="#project_tags"
-        hx-swap="beforeend"
-        hx-vals='{"name": "{{ tag.name }}", "type": "option"}'
-        class="rounded-md cursor-pointer px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 focus:bg-gray-50"
-        onclick="selectTag()"
-      >
-        {{ tag.name }}
+      <div class="rounded-md px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 focus:bg-gray-50">
+        No available tags
       </div>
     </li>
+  @else
+    @each(tag in tags)
+      <li>
+        <div
+          hx-get="{{ route('tags_select_item') }}"
+          hx-trigger="click"
+          hx-target="#project_tags"
+          hx-swap="beforeend"
+          hx-vals='{"name": "{{ tag.name }}", "type": "option"}'
+          class="rounded-md cursor-pointer px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 focus:bg-gray-50"
+          onclick="selectTag()"
+        >
+          {{ tag.name }}
+        </div>
+      </li>
+    @end
   @end
 @end
