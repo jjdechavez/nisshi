@@ -86,15 +86,8 @@
             <div class="relative">
               <div class="absolute z-10 w-full mt-3 rounded-lg border border-gray-100 bg-white shadow-lg">
                 <ul id="project_tag_options" hx-include="[name='tagTypes[]']" class="max-h-64 space-y-1 overflow-auto p-2 hidden">
-                  @if(tags.length)
-                    @include('dashboard/partials/projects/tag_option')
-                  @else
-                    <li>
-                      <div class="rounded-md px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 focus:bg-gray-50">
-                        No available tags
-                      </div>
-                    </li>
-                  @end
+                  @set('searchState', 'result')
+                  @include('dashboard/partials/projects/tag_option')
                 </ul>
               </div>
             </div>
