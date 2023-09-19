@@ -85,6 +85,7 @@
             <div class="relative">
               <div class="absolute z-10 w-full mt-3 rounded-lg border border-gray-100 bg-white shadow-lg">
                 <ul id="project_tag_options" hx-include="[name='tags[]']" hx-include="[name='tagTypes[]']" class="max-h-64 space-y-1 overflow-auto p-2 hidden">
+                  @includeIf(tags.length, 'dashboard/partials/projects/tag_option')
                 </ul>
               </div>
             </div>
@@ -101,17 +102,11 @@
             })
 
             const tagField = document.querySelector('#tag_field')
-            tagField.addEventListener('focusout', function() {
-              const projectTagOptionElement = document.querySelector('#project_tag_options')
-
-              projectTagOptionElement.dataset.timer = setTimeout(function() {
+            document.addEventListener('click', function(event) {
+              if (!tagField.contains(event.target)) {
+                const projectTagOptionElement = document.querySelector('#project_tag_options')
                 projectTagOptionElement.classList.add('hidden')
-              }, 150)
-            })
-
-            tagField.addEventListener('focusin', function() {
-              const projectTagOptionElement = document.querySelector('#project_tag_options')
-              clearTimeout(projectTagOptionElement.dataset.timer)
+              }
             })
 
             function selectTag() {

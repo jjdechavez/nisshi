@@ -4,7 +4,6 @@ import Client from 'App/Models/Client'
 import Project from 'App/Models/Project'
 import Tag from 'App/Models/Tag'
 import ProjectValidator from 'App/Validators/ProjectValidator'
-import { DateTime } from 'luxon'
 
 export default class ProjectsController {
   public async index({ request, view }: HttpContextContract) {
@@ -26,7 +25,9 @@ export default class ProjectsController {
     const project = await Project.findOrFail(params.id)
     await project.load('projectStatus')
 
-    return view.render('dashboard/projects/edit', { project })
+    const tags = await Tag.all()
+
+    return view.render('dashboard/projects/edit', { project, tags })
   }
 
   public async update(ctx: HttpContextContract) {
