@@ -17,6 +17,7 @@ export default class ProjectsController {
   public async show({ params, view }: HttpContextContract) {
     const project = await Project.findOrFail(params.id)
     await project.load('projectStatus')
+    await project.load('tags')
 
     return view.render('dashboard/projects/show', { project })
   }
