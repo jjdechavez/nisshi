@@ -53,11 +53,24 @@ Route.group(() => {
 
     Route.get('/:id/members/forms/contact', 'MembersController.contactField').as('clients_members_forms_contact')
 
-    Route.get('/:id/projects/create', 'ProjectsController.create').as('clients_projects_create')
-    Route.post('/:id/projects', 'ProjectsController.store').as('clients_projects_store')
-    Route.get('/:id/projects/:projectId/edit', 'ProjectsController.edit').as('clients_projects_edit')
-    Route.put('/:id/projects/:projectId', 'ProjectsController.update').as('clients_projects_update')
+    Route.get('/:id/projects/create', 'ProjectsController.createClientProject').as('clients_projects_create')
+    Route.post('/:id/projects', 'ProjectsController.storeClientProject').as('clients_projects_store')
+    Route.get('/:id/projects/:projectId/edit', 'ProjectsController.editClientProject').as('clients_projects_edit')
+    Route.put('/:id/projects/:projectId', 'ProjectsController.updateClientProject').as('clients_projects_update')
   }).prefix('/clients')
+
+  Route.group(() => {
+    Route.get('/', 'ProjectsController.index').as('projects')
+    Route.get('/:id', 'ProjectsController.show').as('projects_show')
+    Route.get('/:id/edit', 'ProjectsController.edit').as('projects_edit')
+    Route.put('/:id', 'ProjectsController.update').as('projects_update')
+  }).prefix('/projects')
+
+  Route.group(() => {
+    Route.get('/search/items', 'TagsController.searchTag').as('tags_search_item')
+    Route.get('/select/items', 'TagsController.selectTag').as('tags_select_item')
+    Route.delete('/unselect/items', 'TagsController.unselectTag').as('tags_unselect_item')
+  }).prefix('/tags')
 
   Route.group(() => {
     Route.get('/members', 'SystemsController.index').as('systems_members')

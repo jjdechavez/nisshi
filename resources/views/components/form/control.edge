@@ -1,4 +1,7 @@
 @inject({ ...$props.all() })
-<div class="text-sm">
+<div
+  {{ $props.serializeExcept(['name', 'placeholder', 'required', 'errorKey']) }}
+  class="text-sm"
+>
   {{{ await $slots.main() }}}
 </div>

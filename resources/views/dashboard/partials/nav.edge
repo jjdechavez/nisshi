@@ -21,13 +21,15 @@
               active: ['clients', 'clients_create', 'clients_show', 'clients_edit', 'clients_members_create', 'clients_members_edit', 'clients_projects_create', 'clients_projects_edit']
             })
             @!dashboard.nav.link({
+              href: '/dashboard/projects',
+              name: 'Projects',
+              active: ['projects', 'projects_show', 'projects_edit']
+            })
+            @!dashboard.nav.link({
               href: '/dashboard/systems/members',
               name: 'Systems',
               active: ['systems_members', 'systems_invites', 'systems_invites_create', 'systems_roles', 'systems_contact_types', 'systems_contact_types_create']
             })
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Projects</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Calendar</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Reports</a>
           </div>
         </div>
 

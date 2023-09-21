@@ -1,0 +1,132 @@
+@layout('layouts/dashboard')
+@set('rawProjectStatuses', await loadProjectStatuses())
+@set('projectStatus', toOptions(rawProjectStatuses, { label: 'name', value: 'id' }))
+
+@section('scripts')
+  @super
+  <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+@end
+
+@section('header')
+  @dashboard.header({ title: 'Update project' })
+    @slot('action')
+      @!button.secondary({
+        type: 'link',
+        href: route('projects_show', { id: project.id }),
+        name: 'Cancel',
+      })
+      @!button.primary({
+        type: 'submit',
+        name: 'Save project',
+        form: 'project_form'
+      })
+    @end
+  @end
+@end
+
+@section('content')
+    <section class="grid gap-y-4 w-4/6 mx-auto lg:w-1/2">
+
+      @set('action', route('projects_update', { id: project.id }, { qs: { _method: 'PUT' } }))
+
+      <form id="project_form" method="POST" action="{{ action }}" class="grid gap-y-6">
+        {{ csrfField() }}
+
+        <section class="grid gap-y-6">
+
+          @form.control({
+            name: 'code',
+            placeholder: 'OGI',
+            errorKey: 'errors.code',
+            required: true
+          })
+            @!form.label({ title: 'Code' })
+            @!form.input({ type: 'text', value: project?.code, maxLength: '3', readonly: !!project?.code })
+            @!form.help({ title: '3 characters only. This cannot be changed.' })
+            @!form.error()
+          @end
+
+          @form.control({
+            name: 'name',
+            placeholder: 'Origami',
+            errorKey: 'errors.name',
+            required: true
+          })
+            @!form.label({ title: 'Name' })
+            @!form.input({ type: 'text', value: project?.name })
+            @!form.error()
+          @end
+
+          @form.control({
+            name: 'projectStatusId',
+            errorKey: 'errors.projectStatusId',
+            required: true
+          })
+            @!form.label({ title: 'Status' })
+            @!form.select({
+              options: projectStatus,
+              value: project?.projectStatusId
+            })
+            @!form.error()
+          @end
+
+          @form.control({
+            name: 'tag',
+            errorKey: 'errors.tags',
+            id: 'tag_field'
+          })
+            @!form.label({ title: 'Tags' })
+            @!form.input({
+              type: 'search',
+              'hx-get': route('tags_search_item'),
+              'hx-trigger': 'keyup changed delay:500ms, search, click',
+              'hx-target': '#project_tag_options',
+              'hx-include': "[name='tags[]']",
+            })
+            <div class="relative">
+              <div class="absolute z-10 w-full mt-3 rounded-lg border border-gray-100 bg-white shadow-lg">
+                <ul id="project_tag_options" hx-include="[name='tagTypes[]']" class="max-h-64 space-y-1 overflow-auto p-2 hidden">
+                  @set('searchState', 'result')
+                  @include('dashboard/partials/projects/tag_option')
+                </ul>
+              </div>
+            </div>
+
+            <div id="project_tags" class="mt-4 flex flex-wrap gap-2">
+              @if(project.tags.length > 0)
+                @each(tag in project.tags)
+                  @include('dashboard/partials/projects/tag_item')
+                @end
+              @end
+            </div>
+          @end
+
+          <script>
+            const tagInput = document.querySelector('input[name="tag"]')
+            tagInput.addEventListener('focus', (event) => {
+              const projectTagOptionElement = document.querySelector('#project_tag_options')
+              projectTagOptionElement.classList.remove('hidden')
+            })
+
+            const tagField = document.querySelector('#tag_field')
+            document.addEventListener('click', function(event) {
+              if (!tagField.contains(event.target)) {
+                const projectTagOptionElement = document.querySelector('#project_tag_options')
+                projectTagOptionElement.classList.add('hidden')
+              }
+            })
+
+            function selectTag() {
+              const projectTagOptionElement = document.querySelector('#project_tag_options')
+              projectTagOptionElement.classList.add('hidden')
+
+              tagInput.value = ''
+            }
+          </script>
+
+        </section>
+
+      </form>
+
+    </section>
+@end

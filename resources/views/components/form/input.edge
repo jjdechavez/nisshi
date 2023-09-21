@@ -34,7 +34,7 @@
     placeholder: $context.placeholder ? $context.placeholder : '',
     id: $context.name,
     name: $context.name,
-    required: $context.required,
+    required: $context.required === true,
   }, false)
 }}
 value="{{ $props.value }}" />

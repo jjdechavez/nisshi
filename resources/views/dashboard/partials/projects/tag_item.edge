@@ -1,0 +1,23 @@
+@set('name', tag?.name ?? name)
+@set('type', tag ? 'option' : type)
+
+<span class="inline-flex items-center gap-x-0.5 px-2 py-1 rounded-md bg-indigo-100 font-medium text-xs text-indigo-600">
+  <input type="hidden" name="tags[]" value="{{ name + '_' + type }}">
+  {{ name }}
+  <button
+    hx-delete="{{ route('tags_unselect_item') }}"
+    hx-trigger="click"
+    hx-swap="outerHTML"
+    hx-target="closest span"
+    type="button"
+    class="relative rounded-sm w-3.5 h-3.5 -mr-1.5 hover:bg-indigo-600/20"
+  >
+    <span class="sr-only">
+      Remove
+    </span>
+    <svg viewBox="0 0 14 14" class="stroke-indigo-500 hover:stroke-indigo-700/75 w-3.5 h-3.5">
+      <path d="M4 4l6 6m0-6l-6 6"></path>
+    </svg>
+    <span class="absolute -inset-1"></span>
+  </button>
+</span>
