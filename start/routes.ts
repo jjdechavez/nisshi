@@ -82,7 +82,9 @@ Route.group(() => {
       Route.get('/:id/resend', 'InvitesController.resend').as('systems_invites_resend')
     }).prefix('/invites')
 
-    Route.get('/roles', 'SystemsController.roles').as('systems_roles')
+    Route.group(() => {
+      Route.get('/', 'RolesController.index').as('systems_roles')
+    }).prefix('/roles')
 
     Route.group(() => {
       Route.get('/', 'ContactTypesController.index').as('systems_contact_types')
