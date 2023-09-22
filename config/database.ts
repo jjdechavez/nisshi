@@ -37,12 +37,14 @@ const databaseConfig: DatabaseConfig = {
     sqlite: {
       client: 'sqlite',
       connection: {
-        filename: Application.tmpPath(Env.get('DB_NAME')),
+        filename: ['test', 'development'].includes(Env.get('NODE_ENV'))
+          ? Application.tmpPath(Env.get('DB_NAME'))
+          : Env.get('DB_NAME'),
       },
       pool: {
         afterCreate: (conn, cb) => {
           conn.run('PRAGMA foreign_keys=true', cb)
-        }
+        },
       },
       migrations: {
         naturalSort: true,
@@ -51,8 +53,7 @@ const databaseConfig: DatabaseConfig = {
       healthCheck: false,
       debug: false,
     },
-
-  }
+  },
 }
 
 export default databaseConfig
