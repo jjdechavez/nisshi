@@ -14,6 +14,7 @@
         @!button.primary({
           type: 'link',
           name: 'Add role',
+          href: route('systems_roles_create')
         })
       </header>
 
@@ -22,6 +23,7 @@
           data: roles,
           columns: [
             { name: 'Name', field: 'name' },
+            { name: '', field: '_actions' },
           ],
           emptyTitle: 'No roles',
           emptySubTitle: 'Get started by creating your first role',
@@ -33,6 +35,12 @@
               <a href="#" class="font-semibold">
                 <h5>{{ scope.row.name }}</h5>
               </a>
+            @elseif (scope.column.field === '_actions')
+              @!button.link({
+                type: 'link',
+                href: route('systems_roles_edit', { id: scope.row.id }),
+                name: 'Edit'
+              })
             @end
           @end
         @end

@@ -82,7 +82,13 @@ Route.group(() => {
       Route.get('/:id/resend', 'InvitesController.resend').as('systems_invites_resend')
     }).prefix('/invites')
 
-    Route.get('/roles', 'SystemsController.roles').as('systems_roles')
+    Route.group(() => {
+      Route.get('/', 'RolesController.index').as('systems_roles')
+      Route.get('/create', 'RolesController.create').as('systems_roles_create')
+      Route.post('/', 'RolesController.store').as('systems_roles_store')
+      Route.get('/:id/edit', 'RolesController.edit').as('systems_roles_edit')
+      Route.put('/:id', 'RolesController.update').as('systems_roles_update')
+    }).prefix('/roles')
 
     Route.group(() => {
       Route.get('/', 'ContactTypesController.index').as('systems_contact_types')
