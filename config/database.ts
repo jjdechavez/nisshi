@@ -39,7 +39,7 @@ const databaseConfig: DatabaseConfig = {
       connection: {
         filename: ['test', 'development'].includes(Env.get('NODE_ENV'))
           ? Application.tmpPath(Env.get('DB_NAME'))
-          : Env.get('DB_NAME'),
+          : Env.get('DATABASE_URL'),
       },
       pool: {
         afterCreate: (conn, cb) => {
