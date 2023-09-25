@@ -14,6 +14,31 @@ import { DateTime } from 'luxon'
 import ClientStatus from 'App/Enums/ClientStatus'
 import ProjectStatus from 'App/Models/ProjectStatus'
 
+View.global('activeClientLinks', [
+  'clients',
+  'clients_create',
+  'clients_show',
+  'clients_edit',
+  'clients_members_create',
+  'clients_members_edit',
+  'clients_projects_create',
+  'clients_projects_edit',
+])
+View.global('activeProjectLinks', ['projects', 'projects_show', 'projects_edit'])
+View.global('activeSystemLinks', [
+  'systems_members',
+  'systems_invites',
+  'systems_invites_create',
+  'systems_roles',
+  'systems_contact_types',
+  'systems_contact_types_create',
+  'systems_roles_create',
+  'systems_roles_edit',
+  'systems_project_statuses',
+  'systems_project_statuses_create',
+  'systems_project_statuses_edit',
+])
+
 View.global('Roles', Roles)
 View.global('loadRoles', function () {
   return Role.query().whereNot('id', Roles.ROOT).select('id', 'name')

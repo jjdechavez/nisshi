@@ -18,17 +18,17 @@
             @!dashboard.nav.link({
               href: '/dashboard/clients',
               name: 'Clients',
-              active: ['clients', 'clients_create', 'clients_show', 'clients_edit', 'clients_members_create', 'clients_members_edit', 'clients_projects_create', 'clients_projects_edit']
+              active: activeClientLinks
             })
             @!dashboard.nav.link({
               href: '/dashboard/projects',
               name: 'Projects',
-              active: ['projects', 'projects_show', 'projects_edit']
+              active: activeProjectLinks
             })
             @!dashboard.nav.link({
               href: '/dashboard/systems/members',
               name: 'Systems',
-              active: ['systems_members', 'systems_invites', 'systems_invites_create', 'systems_roles', 'systems_contact_types', 'systems_contact_types_create', 'systems_roles_create', 'systems_roles_edit']
+              active: activeSystemLinks
             })
           </div>
         </div>
@@ -124,11 +124,18 @@
       @!dashboard.nav.menuLink({
         href: '/dashboard/clients',
         name: 'Clients',
-        active: ['clients']
+        active: activeClientLinks
       })
-      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Projects</a>
-      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Calendar</a>
-      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reports</a>
+      @!dashboard.nav.menuLink({
+        href: '/dashboard/projects',
+        name: 'Projects',
+        active: activeProjectLinks
+      })
+      @!dashboard.nav.menuLink({
+        href: '/dashboard/systems/members',
+        name: 'Systems',
+        active: activeSystemLinks
+      })
     </div>
     <div class="border-t border-gray-700 pb-3 pt-4">
       <div class="flex items-center px-5">
@@ -151,6 +158,11 @@
         <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
         <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
         <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
+        @!dashboard.nav.mobile.profileLink({
+          href: '/logout',
+          name: 'Logout',
+          active: ['logout'],
+        })
       </div>
     </div>
   </div>
