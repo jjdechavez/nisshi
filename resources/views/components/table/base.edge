@@ -7,58 +7,60 @@
   right: 'text-right'
 })
 
-<table class="min-w-full divide-y divide-gray-200 text-sm">
-  @if ($slots.thead || columns?.length)
-    <thead>
-      <tr>
-        @if (columns?.length)
-          @each(column in columns)
-            <th {{{ column.width ? `style="width: ${column.width}"` : '' }}} class="
-              whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900
-              {{ alignments[align ?? 'left'] }}
-              {{ column.className ? column.className : '' }}
-            ">
-              {{ column.name }}
-            </th>
-          @endeach
-        @else
-          {{{ await $slots.thead() }}}
-        @endif
-      </tr>
-    </thead>
-  @endif
-  <tbody class="divide-y">
-    @if (rows?.length)
-      @each(row in rows)
+<div class="overflow-x-auto">
+  <table class="min-w-full divide-y divide-gray-200 text-sm">
+    @if ($slots.thead || columns?.length)
+      <thead>
         <tr>
           @if (columns?.length)
             @each(column in columns)
-              <td class="whitespace-nowrap px-4 py-3 text-gray-700">
-                {{{ await $slots.tableData({ row, column }) }}}
-              </td>
+              <th {{{ column.width ? `style="width: ${column.width}"` : '' }}} class="
+                whitespace-nowrap px-4 py-3 text-left font-semibold text-gray-900
+                {{ alignments[align ?? 'left'] }}
+                {{ column.className ? column.className : '' }}
+              ">
+                {{ column.name }}
+              </th>
             @endeach
-          @elseif ($slots.row)
-            {{{ await $slots.row() }}}
+          @else
+            {{{ await $slots.thead() }}}
           @endif
         </tr>
-      @endeach
-    @elseif ($slots.tbody)
-      {{{ await $slots.tbody() }}}
-    @else
-      <tr>
-        <td colspan="{{ columns.length ? columns.length : 1 }}" class="text-center">
-          @!component('components/empty', {
-            title: emptyTitle ?? 'No Posts',
-            subtitle: emptySubTitle ?? 'Get started by creating your first post',
-            cta: emptyCta ?? 'Create Post',
-            href: emptyHref ?? route('dashboard'),
-            showCta: emptyCtaShow ?? true
-          })
-        </td>
-      </tr>
+      </thead>
     @endif
-  </tbody>
-</table>
+    <tbody class="divide-y">
+      @if (rows?.length)
+        @each(row in rows)
+          <tr>
+            @if (columns?.length)
+              @each(column in columns)
+                <td class="whitespace-nowrap px-4 py-3 text-gray-700">
+                  {{{ await $slots.tableData({ row, column }) }}}
+                </td>
+              @endeach
+            @elseif ($slots.row)
+              {{{ await $slots.row() }}}
+            @endif
+          </tr>
+        @endeach
+      @elseif ($slots.tbody)
+        {{{ await $slots.tbody() }}}
+      @else
+        <tr>
+          <td colspan="{{ columns.length ? columns.length : 1 }}" class="text-center">
+            @!component('components/empty', {
+              title: emptyTitle ?? 'No Posts',
+              subtitle: emptySubTitle ?? 'Get started by creating your first post',
+              cta: emptyCta ?? 'Create Post',
+              href: emptyHref ?? route('dashboard'),
+              showCta: emptyCtaShow ?? true
+            })
+          </td>
+        </tr>
+      @endif
+    </tbody>
+  </table>
+</div>
 
 @if (isPaginated)
   @!pagination.base({ data })
