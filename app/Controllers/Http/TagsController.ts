@@ -1,7 +1,28 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Tag from 'App/Models/Tag'
+import ProjectTagValidator from 'App/Validators/ProjectTagValidator'
 
 export default class TagsController {
+  public async index({ request, view }: HttpContextContract) {
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
+    const tags = await Tag.query().paginate(page, limit)
+
+    return view.render('dashboard/systems/project_tags/index', { tags })
+  }
+
+  public async create({ view }: HttpContextContract) {
+    return view.render('dashboard/systems/project_tags/create_or_edit')
+  }
+
+  public async store({ request, session, response }: HttpContextContract) {
+    const payload = await request.validate(ProjectTagValidator)
+    const tag = await Tag.create(payload)
+
+    session.flash('success', `${tag.name} has been successfully created!`)
+    return response.redirect().toRoute('systems_project_tags')
+  }
+
   public async searchTag({ request, view }: HttpContextContract) {
     const qs = request.qs()
     const term = qs.tag

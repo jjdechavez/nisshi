@@ -105,6 +105,12 @@ Route.group(() => {
       Route.get('/:id/edit', 'ProjectStatusesController.edit').as('systems_project_statuses_edit')
       Route.put('/:id', 'ProjectStatusesController.update').as('systems_project_statuses_update')
     }).prefix('/project-statuses')
+
+    Route.group(() => {
+      Route.get('/', 'TagsController.index').as('systems_project_tags')
+      Route.get('/create', 'TagsController.create').as('systems_project_tags_create')
+      Route.post('/', 'TagsController.store').as('systems_project_tags_store')
+    }).prefix('/project-tags')
   }).prefix('systems')
 })
   .prefix('dashboard')
