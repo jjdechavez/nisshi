@@ -23,7 +23,7 @@
       @set('action', route('systems_project_tags_store'))
 
       @if(tag?.id)
-        @set('action', route('systems_project_statuses_update', { id: tag.id }, { qs: { _method: 'PUT' } }))
+        @set('action', route('systems_project_tags_update', { id: tag.id }, { qs: { _method: 'PUT' } }))
       @end
 
       <form id="project_tag_form" method="POST" action="{{ action }}" class="grid gap-y-6">

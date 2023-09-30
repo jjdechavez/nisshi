@@ -23,6 +23,22 @@ export default class TagsController {
     return response.redirect().toRoute('systems_project_tags')
   }
 
+  public async edit({ params, view }: HttpContextContract) {
+    const tag = await Tag.findOrFail(params.id)
+    return view.render('dashboard/systems/project_tags/create_or_edit', { tag })
+  }
+
+  public async update(ctx: HttpContextContract) {
+    const { params, request, session, response } = ctx
+    const tag = await Tag.findOrFail(params.id)
+    const payload = await request.validate(new ProjectTagValidator(ctx, tag))
+
+    await tag.merge(payload).save()
+
+    session.flash('success', `${tag.name} changes were successfully saved!`)
+    return response.redirect().toRoute('systems_project_tags')
+  }
+
   public async searchTag({ request, view }: HttpContextContract) {
     const qs = request.qs()
     const term = qs.tag
