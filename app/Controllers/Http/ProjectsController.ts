@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
 import Client from 'App/Models/Client'
 import Project from 'App/Models/Project'
 import Tag from 'App/Models/Tag'
@@ -36,6 +35,7 @@ export default class ProjectsController {
   public async update(ctx: HttpContextContract) {
     const { params, request, session, response } = ctx
 
+    // Implementing transaction - cause timeout
     const project = await Project.findOrFail(params.id)
     const payload = await request.validate(new ProjectValidator(ctx, project))
     const body = request.body()

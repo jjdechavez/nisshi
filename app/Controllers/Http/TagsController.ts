@@ -79,9 +79,22 @@ export default class TagsController {
 
   public async selectTag({ request, view }: HttpContextContract) {
     const qs = request.qs()
-    const { id, name, type } = qs
+    const { id, name, type } = qs as
+      | { id: string; name: string; type: 'option' }
+      | { id: undefined; name: string; type: 'new' }
     console.log({ id, name, type })
-    return view.render('dashboard/partials/projects/tag_item', { id, name, type })
+
+    const payload = {
+      id,
+      name,
+    }
+
+    if (type === 'new') {
+      const tag = await Tag.create({ name })
+
+      Object.assign(payload, { id: tag.id })
+    }
+    return view.render('dashboard/partials/projects/tag_item', payload)
   }
 
   public async unselectTag({ response }: HttpContextContract) {
