@@ -35,7 +35,6 @@ Route.post('/invites/:id/confirm', 'InvitesController.confirmStore').as('invites
 
 Route.group(() => {
   Route.get('/', 'DashboardController.index').as('dashboard')
-  Route.get('/teams', 'DashboardController.teams').as('teams')
 
   Route.group(() => {
     Route.get('/', 'ClientsController.index').as('clients')
@@ -105,6 +104,14 @@ Route.group(() => {
       Route.get('/:id/edit', 'ProjectStatusesController.edit').as('systems_project_statuses_edit')
       Route.put('/:id', 'ProjectStatusesController.update').as('systems_project_statuses_update')
     }).prefix('/project-statuses')
+
+    Route.group(() => {
+      Route.get('/', 'TagsController.index').as('systems_project_tags')
+      Route.get('/create', 'TagsController.create').as('systems_project_tags_create')
+      Route.post('/', 'TagsController.store').as('systems_project_tags_store')
+      Route.get('/:id/edit', 'TagsController.edit').as('systems_project_tags_edit')
+      Route.put('/:id', 'TagsController.update').as('systems_project_tags_update')
+    }).prefix('/project-tags')
   }).prefix('systems')
 })
   .prefix('dashboard')

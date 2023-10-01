@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
 import Client from 'App/Models/Client'
 import Project from 'App/Models/Project'
 import Tag from 'App/Models/Tag'
@@ -36,27 +35,18 @@ export default class ProjectsController {
   public async update(ctx: HttpContextContract) {
     const { params, request, session, response } = ctx
 
-    const trx = await Database.transaction()
-    const project = await Project.findOrFail(params.id, { client: trx })
+    // Implementing transaction - cause timeout
+    const project = await Project.findOrFail(params.id)
     const payload = await request.validate(new ProjectValidator(ctx, project))
     const body = request.body()
 
     if ('tags' in body) {
-      const tags: Array<{ name: string; type: 'option' | 'new' }> = body.tags.map((tag: string) => {
-        const [name, type] = tag.split('_')
-        return { name, type }
-      })
+      const tags: string[] = body.tags
 
-      // const optionTags = tags.filter((tag) => tag.type === 'option').map((tag) => tag.name)
-      // const rawOptionTags = await Tag.findMany(optionTags)
-      const newTags = tags
-        .filter((tag) => tag.type === 'new')
-        .map((tag) => ({ name: tag.name.toUpperCase() }))
-
-      project.related('tags').createMany(newTags)
+      await project.related('tags').sync(tags)
     }
 
-    project.merge(payload).save()
+    await project.merge(payload).save()
 
     session.flash('success', `${project.name} changes were successfully saved!`)
     return response.redirect().toRoute('projects_show', { id: project.id })

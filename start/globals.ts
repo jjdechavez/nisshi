@@ -37,6 +37,9 @@ View.global('activeSystemLinks', [
   'systems_project_statuses',
   'systems_project_statuses_create',
   'systems_project_statuses_edit',
+  'systems_project_tags',
+  'systems_project_tags_create',
+  'systems_project_tags_edit',
 ])
 
 View.global('Roles', Roles)
