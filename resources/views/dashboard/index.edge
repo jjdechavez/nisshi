@@ -5,5 +5,24 @@
 @end
 
 @section('content')
-  <h2>Hello world</h2>
+  <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
+      @stat.base()
+        @!stat.header({ title: 'Total clients', tooltip: 'The number of daily users' })
+        @!stat.body({ count: '72,540', percent: '1.7', percentType: 'inc' })
+      @end
+
+      @stat.base()
+        @!stat.header({ title: 'Total projects' })
+        @!stat.body({ count: '72,540' })
+      @end
+
+      @stat.base()
+        @!stat.header({ title: 'Total members' })
+        @!stat.body({ count: '3' })
+      @end
+
+    </div>
+  </div>
 @end
