@@ -1,8 +1,9 @@
 @set('name', tag?.name ?? name)
-@set('type', tag ? 'option' : type)
+@set('id', tag?.id ?? id)
+{{-- @set('type', tag ? 'option' : type) --}}
 
 <span class="inline-flex items-center gap-x-0.5 px-2 py-1 rounded-md bg-indigo-100 font-medium text-xs text-indigo-600">
-  <input type="hidden" name="tags[]" value="{{ name + '_' + type }}">
+  <input type="hidden" name="tags[]" value="{{ id }}">
   {{ name }}
   <button
     hx-delete="{{ route('tags_unselect_item') }}"

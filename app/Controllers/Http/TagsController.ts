@@ -43,26 +43,22 @@ export default class TagsController {
     const qs = request.qs()
     const term = qs.tag
 
-    let currentTags: string[] = []
+    let currentTagIds: string[] = []
     if (qs?.tags) {
-      const requestTags: string[] = qs.tags.map((tag: string) => {
-        const [name] = tag.split('_')
-        return name
-      })
-
-      currentTags = [...currentTags, ...requestTags]
+      currentTagIds = [...currentTagIds, ...qs.tags]
     }
+
     const tags = await Tag.query()
       .if(term, (query) => {
         query.whereLike('name', `%${term}%`)
       })
-      .if(currentTags.length > 0, (query) => {
-        query.whereNotIn('name', currentTags)
+      .if(currentTagIds.length > 0, (query) => {
+        query.whereNotIn('id', currentTagIds)
       })
 
     const tagsWithCount = await Tag.query()
       .if(term, (query) => {
-        query.where('name', term.toUpperCase())
+        query.where('name', term)
       })
       .count('* as result')
 
@@ -83,8 +79,9 @@ export default class TagsController {
 
   public async selectTag({ request, view }: HttpContextContract) {
     const qs = request.qs()
-    const { name, type } = qs
-    return view.render('dashboard/partials/projects/tag_item', { name: name.toUpperCase(), type })
+    const { id, name, type } = qs
+    console.log({ id, name, type })
+    return view.render('dashboard/partials/projects/tag_item', { id, name, type })
   }
 
   public async unselectTag({ response }: HttpContextContract) {
