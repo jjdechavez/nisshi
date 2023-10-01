@@ -35,7 +35,6 @@ Route.post('/invites/:id/confirm', 'InvitesController.confirmStore').as('invites
 
 Route.group(() => {
   Route.get('/', 'DashboardController.index').as('dashboard')
-  Route.get('/teams', 'DashboardController.teams').as('teams')
 
   Route.group(() => {
     Route.get('/', 'ClientsController.index').as('clients')

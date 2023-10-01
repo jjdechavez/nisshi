@@ -10,17 +10,17 @@
 
       @stat.base()
         @!stat.header({ title: 'Total clients', tooltip: 'The number of daily users' })
-        @!stat.body({ count: '72,540', percent: '1.7', percentType: 'inc' })
+        @!stat.body({ count: counts.clients, percent: '1.7', percentType: 'inc' })
       @end
 
       @stat.base()
         @!stat.header({ title: 'Total projects' })
-        @!stat.body({ count: '72,540' })
+        @!stat.body({ count: counts.projects })
       @end
 
       @stat.base()
         @!stat.header({ title: 'Total members' })
-        @!stat.body({ count: '3' })
+        @!stat.body({ count: counts.members })
       @end
 
     </div>
